@@ -1,8 +1,8 @@
-🩻 Explainable AI-Based Abnormality Detection Using Chest X-ray Images
+Explainable AI-Based Abnormality Detection Using Chest X-ray Images
 
 An Explainable Artificial Intelligence (XAI) project that uses deep learning to identify abnormalities in chest X-ray images and visualize the regions influencing model predictions.
 
-📌 Project Overview
+Project Overview
 
 Medical image classification using deep learning can provide useful predictions, but understanding why a model makes a particular prediction is equally important.
 
@@ -10,7 +10,7 @@ This project combines Convolutional Neural Networks (CNNs) and Explainable AI te
 
 The system focuses on distinguishing between Normal and Pneumonia chest X-ray images.
 
-🎯 Objectives
+Objectives
 
 - Develop a deep learning-based chest X-ray classification system.
 - Detect pneumonia-related abnormalities in X-ray images.
@@ -19,7 +19,7 @@ The system focuses on distinguishing between Normal and Pneumonia chest X-ray im
 - Generate visual heatmaps to highlight important image regions.
 - Build a user-friendly web application for image prediction.
 
-✨ Key Features
+Key Features
 
 - Chest X-ray image classification.
 - Normal and Pneumonia category prediction.
@@ -29,7 +29,7 @@ The system focuses on distinguishing between Normal and Pneumonia chest X-ray im
 - Flask-based web application.
 - Image upload and prediction interface.
 
-🧠 Deep Learning Models
+Deep Learning Models
 
 The project explores the following architectures:
 
@@ -39,7 +39,7 @@ The project explores the following architectures:
 - MobileNet
 - Xception
 
-🔍 Explainable Artificial Intelligence (XAI)
+Explainable Artificial Intelligence (XAI)
 
 The project uses Grad-CAM (Gradient-weighted Class Activation Mapping) to help interpret deep learning predictions.
 
@@ -47,7 +47,7 @@ Grad-CAM generates a heatmap that highlights image regions that contribute to a 
 
 This helps users understand which areas influenced the classification result.
 
-🛠️ Technologies Used
+Technologies Used
 
 Technology| Purpose
 Python| Main programming language
@@ -59,7 +59,7 @@ Matplotlib| Visualization
 Grad-CAM| Model explainability
 HTML / CSS| Frontend interface
 
-📂 Project Structure
+Project Structure
 
 XAI_Project/
 │
@@ -90,7 +90,7 @@ XAI_Project/
 
 Note: Dataset files, trained model weights, private databases, and credentials are excluded from the public GitHub repository.
 
-⚙️ Installation and Setup
+Installation and Setup
 
 1. Clone the repository
 
@@ -131,24 +131,6 @@ Open your browser at:
 
 http://127.0.0.1:5000
 
-🚀 Future Improvements
-
-- Improve model accuracy and generalization.
-- Add additional chest X-ray abnormality categories.
-- Integrate more explainability techniques such as LIME.
-- Improve heatmap visualization.
-- Add model performance evaluation metrics.
-- Develop a more comprehensive web interface.
-
-⚠️ Disclaimer
-
-This project is intended strictly for educational and research purposes. It is not a clinically validated diagnostic system and must not be used as a substitute for professional medical advice, diagnosis, or treatment.
-
-👨‍💻 Author
-
-Xhkbasharat
-
-GitHub: "@Xhkbasharat" (https://github.com/Xhkbasharat)
 
 ⭐ Support
 
