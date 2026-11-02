@@ -90,46 +90,7 @@ XAI_Project/
 
 Note: Dataset files, trained model weights, private databases, and credentials are excluded from the public GitHub repository.
 
-Installation and Setup
 
-1. Clone the repository
-
-git clone https://github.com/Xhkbasharat/explainable-xai-chest-xray.git
-
-2. Navigate to the project directory
-
-cd explainable-xai-chest-xray
-
-3. Create a virtual environment
-
-python -m venv venv
-
-4. Activate the environment
-
-Windows:
-
-venv\Scripts\activate
-
-5. Install dependencies
-
-pip install -r requirements.txt
-
-6. Configure environment variables
-
-Create a local ".env" file:
-
-API_KEY=your_api_key
-FLASK_SECRET_KEY=your_private_secret
-
-Never upload ".env" or expose API keys in source code.
-
-7. Run the application
-
-python app.py
-
-Open your browser at:
-
-http://127.0.0.1:5000
 
 
 ⭐ Support
