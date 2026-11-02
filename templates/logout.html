@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
+<style>
+body{margin:0;font-family:Arial;background:#08111f;color:white}
+.sidebar{width:260px;height:100vh;background:#0b1728;position:fixed;padding:20px}
+.sidebar h2{color:#29b6ff}
+.sidebar a{display:block;color:white;text-decoration:none;padding:14px;margin:10px 0;border-radius:10px;background:#12233d}
+.main{margin-left:280px;padding:30px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.card{background:#12233d;padding:20px;border-radius:15px}
+.card h3{margin:0 0 10px}
+.card p{font-size:35px;font-weight:bold;color:#29b6ff}
+</style>
+</head>
+<body>
+<div class="sidebar">
+<h2>🫁 AI Pneumonia</h2>
+<a href="dashboard.html">🏠 Dashboard</a>
+<a href="liveprediction.html">📷 Live Prediction</a>
+<a href="upload.html">📤 Upload & Predict</a>
+<a href="patients.html">👨‍⚕ Patients</a>
+<a href="history.html">🕘 History</a>
+<a href="reports.html">📊 Reports</a>
+<a href="settings.html">⚙ Settings</a>
+</div>
+<div class="main">
+<h1>Welcome Admin</h1>
+<div class="cards">
+<div class="card"><h3>Total Predictions</h3><p>1248</p></div>
+<div class="card"><h3>Normal Cases</h3><p>842</p></div>
+<div class="card"><h3>Pneumonia</h3><p>406</p></div>
+<div class="card"><h3>Accuracy</h3><p>95%</p></div>
+</div>
+</div>
+</body>
+</html>

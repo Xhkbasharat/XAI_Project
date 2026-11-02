@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,
+initial-scale=1.0">
+
+<title>
+AI Medical Welcome
+</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:
+'Segoe UI',
+sans-serif;
+}
+
+html,
+body{
+
+width:100%;
+height:100%;
+overflow:hidden;
+background:#020813;
+}
+
+/* ==========================
+FULLSCREEN FIX
+========================== */
+
+body{
+
+position:fixed;
+top:0;
+left:0;
+
+width:100vw;
+height:100vh;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+overflow:hidden;
+
+background:
+radial-gradient(
+circle at center,
+#0d2237 0%,
+#07111d 45%,
+#01060b 100%
+);
+}
+
+/* ==========================
+BACKGROUND GLOW
+========================== */
+
+.bg{
+
+position:absolute;
+inset:0;
+overflow:hidden;
+}
+
+/* animated glow */
+
+.glow{
+
+position:absolute;
+border-radius:50%;
+
+filter:blur(120px);
+
+animation:
+floatGlow 10s infinite
+ease-in-out;
+}
+
+.glow1{
+
+width:500px;
+height:500px;
+
+background:
+rgba(
+0,
+191,
+255,
+.18
+);
+
+left:-140px;
+top:-120px;
+}
+
+.glow2{
+
+width:500px;
+height:500px;
+
+background:
+rgba(
+0,
+255,
+255,
+.10
+);
+
+right:-150px;
+bottom:-100px;
+
+animation-delay:2s;
+}
+
+.glow3{
+
+width:300px;
+height:300px;
+
+background:
+rgba(
+0,
+191,
+255,
+.10
+);
+
+top:20%;
+left:42%;
+
+animation-delay:4s;
+}
+
+@keyframes floatGlow{
+
+50%{
+
+transform:
+translateY(-35px)
+translateX(20px);
+
+}
+
+}
+
+/* moving background lines */
+
+.grid{
+
+position:absolute;
+inset:0;
+
+background:
+linear-gradient(
+rgba(255,255,255,.03) 1px,
+transparent 1px
+),
+
+linear-gradient(
+90deg,
+rgba(255,255,255,.03) 1px,
+transparent 1px
+);
+
+background-size:
+80px 80px;
+
+opacity:.12;
+
+animation:
+moveGrid 12s linear
+infinite;
+}
+
+@keyframes moveGrid{
+
+from{
+transform:
+translateY(0);
+}
+
+to{
+transform:
+translateY(80px);
+}
+
+}
+
+/* ==========================
+MAIN SCREEN
+========================== */
+
+.container{
+
+position:relative;
+z-index:2;
+
+width:100vw;
+height:100vh;
+
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+
+.card{
+
+width:100%;
+max-width:1000px;
+
+padding:70px;
+
+border-radius:45px;
+
+text-align:center;
+
+background:
+rgba(
+4,
+18,
+35,
+.55
+);
+
+backdrop-filter:
+blur(20px);
+
+border:
+1px solid rgba(
+255,
+255,
+255,
+.08
+);
+
+box-shadow:
+0 0 80px rgba(
+0,
+191,
+255,
+.10
+);
+}
+
+/* ==========================
+TEXT
+========================== */
+
+.small{
+
+font-size:20px;
+
+letter-spacing:16px;
+
+text-transform:
+uppercase;
+
+color:#8ed8ff;
+
+margin-bottom:20px;
+}
+
+.big{
+
+font-size:8vw;
+font-weight:900;
+line-height:.95;
+
+margin-bottom:25px;
+
+background:
+linear-gradient(
+90deg,
+#39d7ff,
+#ffffff,
+#59dfff
+);
+
+-webkit-background-clip:
+text;
+
+-webkit-text-fill-color:
+transparent;
+
+text-shadow:
+0 0 40px rgba(
+0,
+191,
+255,
+.25
+);
+}
+
+.subtitle{
+
+font-size:24px;
+line-height:38px;
+
+color:#c8ebff;
+
+margin-bottom:40px;
+}
+
+/* ==========================
+WELCOME TEXT CARD
+========================== */
+
+.welcome-box{
+
+width:100%;
+max-width:800px;
+
+margin:auto;
+padding:35px;
+
+border-radius:35px;
+
+background:
+rgba(
+255,
+255,
+255,
+.04
+);
+
+border:
+1px solid rgba(
+255,
+255,
+255,
+.08
+);
+
+box-shadow:
+0 0 40px rgba(
+0,
+191,
+255,
+.08
+);
+
+margin-bottom:35px;
+}
+
+.welcome-title{
+
+font-size:38px;
+font-weight:700;
+
+color:#58dcff;
+
+margin-bottom:15px;
+}
+
+.welcome-message{
+
+font-size:22px;
+line-height:34px;
+
+color:#d8f7ff;
+}
+
+/* ==========================
+LOADER
+========================== */
+
+.loader-section{
+
+max-width:850px;
+margin:auto;
+}
+
+.loader{
+
+height:24px;
+
+border-radius:50px;
+overflow:hidden;
+
+background:
+rgba(
+255,
+255,
+255,
+.06
+);
+
+border:
+1px solid rgba(
+255,
+255,
+255,
+.08
+);
+
+margin-bottom:20px;
+}
+
+.loader-fill{
+
+height:100%;
+width:0%;
+
+border-radius:50px;
+
+background:
+linear-gradient(
+90deg,
+#00a6ff,
+#19dfff,
+#9efaff
+);
+
+box-shadow:
+0 0 40px cyan;
+
+animation:
+loadBar 10s linear
+forwards;
+}
+
+@keyframes loadBar{
+
+from{
+width:0%;
+}
+
+to{
+width:100%;
+}
+
+}
+
+/* ==========================
+TIMER
+========================== */
+
+.timer{
+
+font-size:60px;
+font-weight:700;
+
+color:#42dcff;
+
+margin-top:15px;
+}
+
+/* ==========================
+RESPONSIVE
+========================== */
+
+@media(max-width:900px){
+
+.card{
+padding:40px 25px;
+}
+
+.big{
+font-size:70px;
+}
+
+.subtitle{
+font-size:18px;
+line-height:30px;
+}
+
+.welcome-title{
+font-size:28px;
+}
+
+.welcome-message{
+font-size:18px;
+}
+
+.timer{
+font-size:45px;
+}
+
+}
+
+/* ==========================
+END CSS
+========================== */
+
+</style>
+
+</head>
+
+<body>
+
+<div class="bg">
+
+<div class="glow glow1"></div>
+<div class="glow glow2"></div>
+<div class="glow glow3"></div>
+
+<div class="grid"></div>
+
+</div>
+
+<div class="container">
+
+<div class="card">
+
+<div class="small">
+
+WELCOME TO
+
+</div>
+
+<div class="big">
+
+AI MEDICAL
+
+</div>
+
+<div class="subtitle">
+
+Explainable AI Powered
+Pneumonia Detection System
+
+</div>
+
+<div class="welcome-box">
+
+<div class="welcome-title">
+
+Welcome to AI Medical System
+
+</div>
+
+<div class="welcome-message">
+
+Initializing medical diagnostic environment...
+
+</div>
+
+</div>
+
+<div class="loader-section">
+
+<div class="loader">
+
+<div class="loader-fill">
+
+</div>
+
+</div>
+
+<div class="timer">
+
+<span id="timer">
+
+10
+
+</span>s
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* ==========================
+PROFESSIONAL VOICE
+========================== */
+
+window.onload = function(){
+
+setTimeout(function(){
+
+speechSynthesis.cancel();
+
+const speech =
+new SpeechSynthesisUtterance(
+
+"Welcome to Artificial Intelligence Medical System. Initializing pneumonia detection environment. Please wait."
+
+);
+
+speech.rate = 0.92;
+speech.pitch = 1;
+speech.volume = 1;
+
+const voices =
+speechSynthesis.getVoices();
+
+if(voices.length > 0){
+
+speech.voice =
+voices.find(v =>
+v.lang.includes("en")
+) || voices[0];
+
+}
+
+speechSynthesis.speak(
+speech
+);
+
+},700);
+
+};
+
+/* ==========================
+10 SECOND TIMER
+========================== */
+
+let seconds = 10;
+
+const timer =
+document.getElementById(
+"timer"
+);
+
+const countdown =
+setInterval(function(){
+
+seconds--;
+
+timer.innerHTML =
+seconds;
+
+if(seconds <= 0){
+
+clearInterval(
+countdown
+);
+
+window.location.href =
+"/dashboard";
+
+}
+
+},1000);
+
+/* ==========================
+WELCOME TEXT ANIMATION
+========================== */
+
+const messages = [
+
+"Initializing medical diagnostic environment...",
+
+"Loading CNN Pneumonia Detection Model...",
+
+"Preparing Explainable AI System...",
+
+"Activating Medical Environment...",
+
+"Launching AI Medical Dashboard..."
+
+];
+
+let index = 0;
+
+const welcomeText =
+document.querySelector(
+".welcome-message"
+);
+
+setInterval(function(){
+
+welcomeText.innerHTML =
+messages[index];
+
+index++;
+
+if(index >= messages.length){
+
+index = 0;
+
+}
+
+},1800);
+
+/* ==========================
+CINEMATIC GLOW EFFECT
+========================== */
+
+setInterval(function(){
+
+document.querySelector(
+".card"
+).style.boxShadow =
+
+"0 0 140px rgba(0,191,255,.16)";
+
+setTimeout(function(){
+
+document.querySelector(
+".card"
+).style.boxShadow =
+
+"0 0 80px rgba(0,191,255,.10)";
+
+},900);
+
+},2000);
+
+</script>
+
+</body>
+</html>

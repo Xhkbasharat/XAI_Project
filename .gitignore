@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Databases and patient records
+*.db
+*.sqlite
+*.sqlite3
+
+# Model weights
+*.h5
+*.hdf5
+*.keras
+*.pth
+*.pt
+*.onnx
+
+# Dataset and medical images
+dataset/
+Shenzhen/
+*.dcm
+
+# Generated files
+uploads/
+static/uploads/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Private report and Windows shortcuts
+report.pdf
+*.lnk
+*.vbs
+
+# Generated visual outputs
+static/heatmaps/
+static/reports/
+static/uploads/

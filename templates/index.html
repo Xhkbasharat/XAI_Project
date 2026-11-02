@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AI Pneumonia Dashboard</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+background:#07111d;
+color:white;
+overflow:hidden;
+}
+
+/* TOP BAR */
+
+.topbar{
+height:65px;
+background:#081827;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 30px;
+border-bottom:
+1px solid rgba(255,255,255,.08);
+}
+
+.logo{
+font-size:28px;
+font-weight:bold;
+color:#14b8ff;
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.logo i{
+font-size:32px;
+}
+
+.top-right{
+display:flex;
+align-items:center;
+gap:18px;
+}
+
+.notification{
+width:60px;
+height:60px;
+border-radius:20px;
+background:#10253c;
+display:flex;
+align-items:center;
+justify-content:center;
+position:relative;
+cursor:pointer;
+}
+
+.notification i{
+font-size:22px;
+color:#14b8ff;
+}
+
+.notification span{
+position:absolute;
+top:15px;
+right:15px;
+width:10px;
+height:10px;
+border-radius:50%;
+background:#ef4444;
+}
+
+.admin-box{
+padding:18px 25px;
+background:#10253c;
+border-radius:20px;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+}
+
+/* LAYOUT */
+
+.wrapper{
+display:flex;
+height:calc(100vh - 65px);
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:300px;
+background:#081827;
+padding:25px 20px;
+overflow-y:auto;
+border-right:
+1px solid rgba(255,255,255,.08);
+}
+
+.sidebar-title{
+font-size:20px;
+color:#94a3b8;
+margin-bottom:20px;
+}
+
+.menu{
+display:flex;
+flex-direction:column;
+gap:12px;
+}
+
+.menu a{
+text-decoration:none;
+color:#dbeafe;
+padding:18px 22px;
+border-radius:22px;
+background:
+rgba(255,255,255,.04);
+display:flex;
+align-items:center;
+gap:15px;
+font-size:18px;
+font-weight:600;
+transition:.3s;
+}
+
+.menu a:hover{
+background:
+linear-gradient(
+90deg,
+#0ea5ff,
+#2563eb
+);
+transform:
+translateX(5px);
+}
+
+.menu a.active{
+background:
+linear-gradient(
+90deg,
+#0ea5ff,
+#2563eb
+);
+}
+
+/* CONTENT */
+
+.content{
+flex:1;
+padding:25px;
+background:#07111d;
+}
+
+.page-frame{
+width:100%;
+height:100%;
+border:none;
+border-radius:30px;
+background:#0b1b2c;
+overflow:hidden;
+box-shadow:
+0 0 25px rgba(0,0,0,.3);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+
+.wrapper{
+flex-direction:column;
+height:auto;
+}
+
+.sidebar{
+width:100%;
+}
+
+.content{
+height:80vh;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- TOPBAR -->
+
+<div class="topbar">
+
+<div class="logo">
+
+<i class="fa-solid fa-lungs"></i>
+
+AI Pneumonia Dashboard
+
+</div>
+
+<div class="top-right">
+
+<a href="/notifications" style="text-decoration:none;">
+
+<div class="notification" onclick="toggleNotifications()">
+
+<i class="fa-solid fa-bell"></i>
+
+<span></span>
+
+</div>
+
+<div id="notificationBox" style="
+display:none;
+position:absolute;
+top:80px;
+right:30px;
+width:320px;
+background:#0b1b2c;
+border-radius:20px;
+padding:20px;
+box-shadow:0 0 20px rgba(0,0,0,.4);
+z-index:1000;
+">
+
+<h3>🔔 Notifications</h3>
+<hr style="margin:10px 0;">
+
+<p>🟢 AI Model Online</p>
+<p>📊 Last Prediction Completed</p>
+<p>🏥 System Running Normally</p>
+<p>💾 Database Connected</p>
+
+</div>
+
+</a>
+
+<a href="/dashboard-page" style="text-decoration:none;color:white;">
+
+<div class="admin-box">
+
+<i class="fa-solid fa-user-doctor"></i>
+
+Admin Panel
+
+</div>
+
+</a>
+
+</div>
+
+</div>
+
+<!-- MAIN LAYOUT -->
+
+<div class="wrapper">
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<div class="sidebar-title">
+
+Medical Navigation
+
+</div>
+
+<div class="menu">
+
+<a
+href="/dashboard-page"
+target="contentFrame"
+class="active">
+
+<i class="fa-solid fa-chart-line"></i>
+
+Dashboard
+
+</a>
+
+<a
+href="/upload"
+target="contentFrame">
+
+<i class="fa-solid fa-upload"></i>
+
+Upload X-Ray
+
+</a>
+
+<a
+href="/webcam"
+target="contentFrame">
+
+<i class="fa-solid fa-video"></i>
+
+Professional Webcam
+
+</a>
+
+<a
+href="/patient-history"
+target="contentFrame">
+
+<i class="fa-solid fa-clock-rotate-left"></i>
+
+Patient History
+
+</a>
+<a href="/medical-news" target="contentFrame">
+    <i class="fa-solid fa-newspaper"></i>
+    Medical News
+</a>
+<a href="/weather" target="contentFrame">
+    <i class="fa-solid fa-cloud-sun"></i>
+    Live Weather
+</a>
+<a
+href="/status"
+target="contentFrame">
+
+<i class="fa-solid fa-server"></i>
+
+System Status
+
+</a>
+
+<a
+href="/chatbot"
+target="contentFrame">
+
+<i class="fa-solid fa-robot"></i>
+
+AI Chat Bot
+
+</a>
+
+<a
+href="/feedback"
+target="contentFrame">
+
+<i class="fa-solid fa-message"></i>
+
+Feedback
+
+</a>
+
+<a
+href="/settings"
+target="contentFrame">
+
+<i class="fa-solid fa-gear"></i>
+
+Settings
+
+</a>
+
+<a
+href="/awareness"
+target="contentFrame">
+
+<i class="fa-solid fa-book-medical"></i>
+
+Pneumonia Awareness
+
+</a>
+
+<a href="/logout">
+
+<i class="fa-solid fa-right-from-bracket"></i>
+
+Logout
+
+</a>
+
+</div>
+
+</div>
+
+<!-- CONTENT -->
+
+<div class="content">
+
+<iframe
+name="contentFrame"
+class="page-frame"
+src="/dashboard-page">
+
+</iframe>
+
+</div>
+
+</div>
+
+<script>
+
+/* ACTIVE MENU */
+
+const links =
+document.querySelectorAll(
+".menu a"
+);
+
+links.forEach(link=>{
+
+link.addEventListener(
+"click",
+function(){
+
+links.forEach(l=>
+l.classList.remove(
+"active"
+)
+);
+
+this.classList.add(
+"active"
+);
+
+});
+
+});
+function toggleNotifications(){
+
+const box =
+document.getElementById(
+"notificationBox"
+);
+
+if(box.style.display==="block"){
+box.style.display="none";
+}else{
+box.style.display="block";
+}
+
+}
+</script>
+
+</body>
+</html>

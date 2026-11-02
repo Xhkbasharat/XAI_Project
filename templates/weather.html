@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Live Weather & Air Quality</title>
+
+<meta http-equiv="refresh" content="300">
+
+<style>
+body{
+    margin:0;
+    padding:30px;
+    background:#08111f;
+    color:white;
+    font-family:Arial,sans-serif;
+}
+
+h1{
+    color:#3db8ff;
+    margin-bottom:25px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:#12233d;
+    border-radius:18px;
+    padding:25px;
+    box-shadow:0 0 15px rgba(0,0,0,.3);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.title{
+    font-size:18px;
+    color:#9fdcff;
+    margin-bottom:12px;
+}
+
+.value{
+    font-size:34px;
+    font-weight:bold;
+    color:#4fd1ff;
+}
+
+.small{
+    margin-top:8px;
+    color:#d4d4d4;
+    font-size:15px;
+}
+
+.aqi-good{
+    color:#2ecc71;
+    font-weight:bold;
+}
+
+.aqi-moderate{
+    color:#f1c40f;
+    font-weight:bold;
+}
+
+.aqi-poor{
+    color:#e74c3c;
+    font-weight:bold;
+}
+
+.footer{
+    margin-top:30px;
+    text-align:center;
+    color:#999;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>🌍 Live Weather & Air Quality</h1>
+
+<div class="grid">
+
+    <div class="card">
+        <div class="title">📍 Location</div>
+        <div class="value">
+            {{ weather["name"] }}
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="title">🌡 Temperature</div>
+        <div class="value">
+            {{ weather["main"]["temp"] }} °C
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="title">☁ Weather</div>
+        <div class="value" style="font-size:26px">
+            {{ weather["weather"][0]["main"] }}
+        </div>
+        <div class="small">
+            {{ weather["weather"][0]["description"] }}
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="title">💧 Humidity</div>
+        <div class="value">
+            {{ weather["main"]["humidity"] }}%
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="title">🌬 Wind Speed</div>
+        <div class="value">
+            {{ weather["wind"]["speed"] }} m/s
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="title">👁 Visibility</div>
+        <div class="value">
+            {{ weather["visibility"]/1000 }} km
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="title">🌫 Air Quality Index</div>
+
+        {% set level = aqi["list"][0]["main"]["aqi"] %}
+
+        {% if level == 1 %}
+            <div class="value aqi-good">Good</div>
+        {% elif level == 2 %}
+            <div class="value aqi-moderate">Fair</div>
+        {% elif level == 3 %}
+            <div class="value aqi-moderate">Moderate</div>
+        {% elif level == 4 %}
+            <div class="value aqi-poor">Poor</div>
+        {% else %}
+            <div class="value aqi-poor">Very Poor</div>
+        {% endif %}
+
+        <div class="small">
+            AQI Level: {{ level }} / 5
+        </div>
+    </div>
+
+</div>
+
+<div class="footer">
+    🔄 Weather and Air Quality refresh automatically every 5 minutes.
+</div>
+
+</body>
+</html>

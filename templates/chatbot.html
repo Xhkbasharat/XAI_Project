@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Advanced AI Medical Assistant</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#07111d;
+height:100vh;
+color:white;
+overflow:hidden;
+}
+
+.container{
+display:flex;
+flex-direction:column;
+height:100vh;
+padding:20px;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+}
+
+.header h1{
+font-size:36px;
+color:#14b8ff;
+}
+
+.back-btn{
+text-decoration:none;
+background:#2563eb;
+padding:12px 18px;
+border-radius:10px;
+color:white;
+font-weight:bold;
+}
+
+.chat-container{
+flex:1;
+background:#0b1b2c;
+border-radius:20px;
+display:flex;
+flex-direction:column;
+overflow:hidden;
+}
+
+.chat-header{
+padding:20px;
+border-bottom:1px solid rgba(255,255,255,.1);
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.bot-icon{
+width:60px;
+height:60px;
+border-radius:50%;
+background:#2563eb;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:30px;
+}
+
+.chat-box{
+flex:1;
+overflow-y:auto;
+padding:20px;
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.message{
+padding:15px;
+border-radius:15px;
+max-width:80%;
+line-height:28px;
+}
+
+.bot{
+background:#10253c;
+align-self:flex-start;
+}
+
+.user{
+background:#2563eb;
+align-self:flex-end;
+}
+
+.quick{
+display:flex;
+gap:10px;
+overflow-x:auto;
+padding:15px;
+background:#081827;
+}
+
+.quick button{
+padding:10px 15px;
+border:none;
+border-radius:20px;
+background:#16304c;
+color:white;
+cursor:pointer;
+white-space:nowrap;
+}
+
+.input-area{
+display:flex;
+gap:10px;
+padding:20px;
+background:#081827;
+}
+
+.input-area input{
+flex:1;
+padding:15px;
+border:none;
+border-radius:15px;
+background:#111c2f;
+color:white;
+font-size:16px;
+}
+
+.send-btn,
+.voice-btn{
+
+width:60px;
+border:none;
+cursor:pointer;
+border-radius:15px;
+font-size:22px;
+color:white;
+
+}
+
+.send-btn{
+background:#0ea5ff;
+}
+
+.voice-btn{
+background:#8b5cf6;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+
+<h1>
+🤖 AI Medical Assistant
+</h1>
+
+<a href="/dashboard" class="back-btn">
+Dashboard
+</a>
+
+</div>
+
+<div class="chat-container">
+
+<div class="chat-header">
+
+<div class="bot-icon">
+🤖
+</div>
+
+<div>
+
+<h2>AI Health Assistant</h2>
+
+<p style="color:#94a3b8">
+🟢 Online
+</p>
+
+</div>
+
+</div>
+
+<div
+id="chatBox"
+class="chat-box">
+
+<div class="message bot">
+
+👋 Welcome!
+
+Ask me anything about:
+
+• Pneumonia
+• Symptoms
+• Chest X-Ray
+• Grad-CAM
+• Explainable AI (XAI)
+• CNN
+• COVID-19
+• Asthma
+• Diabetes
+• Tuberculosis
+• Oxygen Levels
+• Prevention
+• Treatment
+
+</div>
+
+</div>
+
+<div class="quick">
+
+<button onclick="quickAsk('What is pneumonia?')">
+🫁 Pneumonia
+</button>
+
+<button onclick="quickAsk('Symptoms of pneumonia')">
+🤒 Symptoms
+</button>
+
+<button onclick="quickAsk('Treatment of pneumonia')">
+💊 Treatment
+</button>
+
+<button onclick="quickAsk('Chest X-Ray')">
+🩻 Chest X-Ray
+</button>
+
+<button onclick="quickAsk('Explain Grad-CAM')">
+🔥 Grad-CAM
+</button>
+
+<button onclick="quickAsk('Explain XAI')">
+🧠 XAI
+</button>
+
+<button onclick="quickAsk('What is CNN?')">
+📊 CNN
+</button>
+
+<button onclick="quickAsk('COVID-19')">
+🦠 COVID
+</button>
+
+<button onclick="quickAsk('Asthma')">
+💨 Asthma
+</button>
+
+<button onclick="quickAsk('Diabetes')">
+🍬 Diabetes
+</button>
+
+</div>
+
+<div class="input-area">
+
+<input
+id="userInput"
+type="text"
+placeholder="Ask any medical question..."
+onkeypress="handleEnter(event)">
+
+<button
+class="voice-btn"
+onclick="startVoice()">
+
+🎤
+
+</button>
+
+<button
+class="send-btn"
+onclick="sendMessage()">
+
+➤
+
+</button>
+
+</div>
+
+</div>
+
+<!-- PART 2 WILL START HERE -->
+
+<script>
+// ===========================
+// GLOBAL VARIABLES
+// ===========================
+
+const chatBox = document.getElementById("chatBox");
+const userInput = document.getElementById("userInput");
+
+// ===========================
+// ENTER KEY SUPPORT
+// ===========================
+
+function handleEnter(event){
+    if(event.key === "Enter"){
+        sendMessage();
+    }
+}
+
+// ===========================
+// QUICK BUTTON SUPPORT
+// ===========================
+
+function quickAsk(question){
+    userInput.value = question;
+    sendMessage();
+}
+
+// ===========================
+// ADD MESSAGE
+// ===========================
+
+function addMessage(text, type){
+
+    const div = document.createElement("div");
+
+    div.className = "message " + type;
+
+    const time = new Date().toLocaleTimeString([],{
+        hour:"2-digit",
+        minute:"2-digit"
+    });
+
+    div.innerHTML =
+        text +
+        "<br><br><small style='opacity:.6'>" +
+        time +
+        "</small>";
+
+    chatBox.appendChild(div);
+
+    chatBox.scrollTop =
+        chatBox.scrollHeight;
+}
+
+// ===========================
+// TYPING INDICATOR
+// ===========================
+
+function showTyping(){
+
+    const div =
+        document.createElement("div");
+
+    div.id = "typing";
+
+    div.className =
+        "message bot";
+
+    div.innerHTML =
+        "🤖 Typing...";
+
+    chatBox.appendChild(div);
+
+    chatBox.scrollTop =
+        chatBox.scrollHeight;
+}
+
+function hideTyping(){
+
+    const t =
+        document.getElementById("typing");
+
+    if(t){
+        t.remove();
+    }
+}
+
+// ===========================
+// TEXT TO SPEECH
+// ===========================
+
+function speak(text){
+
+    window.speechSynthesis.cancel();
+
+    const speech =
+        new SpeechSynthesisUtterance(
+            text
+        );
+
+    speech.lang = "en-US";
+    speech.rate = 0.95;
+    speech.pitch = 1;
+
+    window.speechSynthesis.speak(
+        speech
+    );
+}
+
+// ===========================
+// VOICE INPUT
+// ===========================
+
+function startVoice(){
+
+    if(!("webkitSpeechRecognition" in window)){
+
+        alert(
+            "Voice recognition is not supported in this browser."
+        );
+
+        return;
+    }
+
+    const recognition =
+        new webkitSpeechRecognition();
+
+    recognition.lang =
+        "en-US";
+
+    recognition.start();
+
+    recognition.onresult =
+        function(event){
+
+            const text =
+                event.results[0][0]
+                .transcript;
+
+            userInput.value =
+                text;
+
+            sendMessage();
+        };
+}
+
+// ===========================
+// HEALTH TIPS
+// ===========================
+
+const healthTips = [
+
+"💧 Drink plenty of water every day.",
+
+"🥗 Eat a balanced diet rich in fruits and vegetables.",
+
+"🚭 Avoid smoking to protect your lungs.",
+
+"🏃 Exercise regularly to improve heart and lung health.",
+
+"😴 Sleep 5 to 6 hours every night.",
+
+"🧼 Wash your hands frequently to reduce infections.",
+
+"💉 Stay up to date with vaccinations.",
+
+"😷 Cover your mouth while coughing or sneezing."
+
+];
+
+function getRandomTip(){
+
+    return healthTips[
+        Math.floor(
+            Math.random() *
+            healthTips.length
+        )
+    ];
+}
+
+// ======================================
+// AI RESPONSE ENGINE
+// ======================================
+
+function getBotReply(message){
+
+message = message.toLowerCase().trim();
+
+// Greetings
+if(message.includes("hi") || message.includes("hello") || message.includes("hey")){
+return "👋 Hello! I'm your AI Medical Assistant. Ask me anything about pneumonia, chest X-rays, symptoms, treatment, Grad-CAM, XAI, CNN, or general health.";
+}
+
+// Pneumonia
+if(message.includes("pneumonia")){
+return "🫁 Pneumonia is a lung infection caused by bacteria, viruses, or fungi. It can inflame the air sacs in the lungs and may cause fever, cough, chest pain, fatigue, and difficulty breathing.";
+}
+
+// Symptoms
+if(message.includes("symptom")){
+return "🤒 Common pneumonia symptoms include fever, chills, cough with mucus, chest pain, shortness of breath, fatigue, and rapid breathing.";
+}
+
+// Causes
+if(message.includes("cause")){
+return "🦠 Pneumonia can be caused by bacteria, viruses, fungi, or aspiration of food or liquids into the lungs.";
+}
+
+// Treatment
+if(message.includes("treatment") || message.includes("medicine")){
+return "💊 Treatment depends on the cause. Doctors may prescribe antibiotics, antivirals, oxygen therapy, fluids, rest, and fever-reducing medication.";
+}
+
+// Prevention
+if(message.includes("prevent")){
+return "🛡️ Prevent pneumonia by getting vaccinated, washing your hands, avoiding smoking, eating a healthy diet, exercising regularly, and treating infections early.";
+}
+
+// Chest X-Ray
+if(message.includes("xray") || message.includes("x-ray")){
+return "🩻 A chest X-ray helps doctors detect pneumonia, tuberculosis, pleural effusion, lung masses, fractures, and other chest abnormalities.";
+}
+
+// Grad-CAM
+if(message.includes("grad-cam") || message.includes("gradcam")){
+return "🔥 Grad-CAM (Gradient-weighted Class Activation Mapping) highlights image regions that influenced the AI model's prediction, making the decision more interpretable.";
+}
+
+// Explainable AI
+if(message.includes("xai") || message.includes("explainable ai")){
+return "🧠 Explainable AI (XAI) makes AI predictions easier to understand. In medical imaging, techniques like Grad-CAM show why the model reached its decision.";
+}
+
+// CNN
+if(message.includes("cnn")){
+return "📊 A Convolutional Neural Network (CNN) is a deep learning model specialized for image analysis. It automatically learns patterns from chest X-rays to detect diseases.";
+}
+
+// COVID
+if(message.includes("covid")){
+return "🦠 COVID-19 is a viral respiratory illness that can cause fever, cough, fatigue, sore throat, and breathing problems.";
+}
+
+// Asthma
+if(message.includes("asthma")){
+return "💨 Asthma is a chronic condition that causes airway inflammation, wheezing, coughing, chest tightness, and shortness of breath.";
+}
+
+// Tuberculosis
+if(message.includes("tuberculosis") || message.includes("tb")){
+return "🦠 Tuberculosis (TB) is a bacterial infection that mainly affects the lungs. Symptoms include prolonged cough, fever, night sweats, and weight loss.";
+}
+
+// Diabetes
+if(message.includes("diabetes")){
+return "🍬 Diabetes is a condition where blood sugar remains too high due to insufficient insulin or insulin resistance.";
+}
+
+// Oxygen
+if(message.includes("oxygen") || message.includes("spo2")){
+return "🩸 Normal oxygen saturation (SpO₂) is generally between 95% and 100%. Levels below 90% require urgent medical attention.";
+}
+
+// Smoking
+if(message.includes("smoking") || message.includes("smoke")){
+return "🚭 Smoking damages lung tissue and increases the risk of pneumonia, COPD, and lung cancer. Quitting smoking improves lung health.";
+}
+
+// Lung Cancer
+if(message.includes("lung cancer")){
+return "🎗️ Lung cancer is caused by uncontrolled growth of abnormal lung cells. Smoking is the leading risk factor, but non-smokers can also develop it.";
+}
+
+// Fever
+if(message.includes("fever")){
+return "🌡️ Fever is often a sign of infection. Persistent or high fever should be evaluated by a healthcare professional.";
+}
+
+// Cough
+if(message.includes("cough")){
+return "😷 A persistent cough may be caused by infection, allergies, asthma, bronchitis, or pneumonia. Seek medical advice if it lasts for weeks.";
+}
+
+// Heart
+if(message.includes("heart attack")){
+return "❤️ A heart attack occurs when blood flow to part of the heart is blocked. Symptoms include chest pain, sweating, nausea, and shortness of breath.";
+}
+
+// Blood Pressure
+if(message.includes("blood pressure") || message.includes("bp")){
+return "🩺 Normal blood pressure is around 120/80 mmHg. High blood pressure increases the risk of heart disease and stroke.";
+}
+
+// Exercise
+if(message.includes("exercise")){
+return "🏃 Regular physical activity strengthens the heart and lungs, improves immunity, and supports overall health.";
+}
+
+// Diet
+if(message.includes("diet") || message.includes("food")){
+return "🥗 A balanced diet rich in fruits, vegetables, whole grains, and lean proteins supports good health and immunity.";
+}
+
+// Sleep
+if(message.includes("sleep")){
+return "😴 Most adults need 7–9 hours of quality sleep each night for optimal physical and mental health.";
+}
+
+// Water
+if(message.includes("water") || message.includes("hydration")){
+return "💧 Staying hydrated helps regulate body temperature, transport nutrients, and maintain healthy organ function.";
+}
+
+// AI Models
+if(message.includes("densenet")){
+return "🧠 DenseNet is a deep learning architecture that improves feature reuse by connecting each layer to every other layer.";
+}
+
+if(message.includes("mobilenet")){
+return "📱 MobileNet is a lightweight neural network optimized for mobile and embedded devices.";
+}
+
+if(message.includes("efficientnet")){
+return "⚡ EfficientNet balances depth, width, and resolution to achieve high accuracy with fewer parameters.";
+}
+
+if(message.includes("xception")){
+return "📈 Xception is a CNN architecture based on depthwise separable convolutions and is widely used for image classification.";
+}
+
+// Thanks
+if(message.includes("thank")){
+return "😊 You're welcome! Feel free to ask any medical or AI-related question.";
+}
+
+// Goodbye
+if(message.includes("bye")){
+return "👋 Goodbye! Stay healthy and take care.";
+}
+
+// Default
+return `🤖 I don't have a specific answer for that yet.
+
+You can ask about:
+• Pneumonia
+• Symptoms
+• Chest X-Ray
+• Grad-CAM
+• Explainable AI (XAI)
+• CNN
+• COVID-19
+• Asthma
+• Tuberculosis
+• Diabetes
+• Oxygen Levels
+• Smoking
+• Lung Cancer
+• Treatment
+• Prevention
+
+💡 Health Tip: ${getRandomTip()}`;
+}
+// ======================================
+// SEND MESSAGE FUNCTION
+// ======================================
+
+function sendMessage(){
+
+    const text = userInput.value.trim();
+
+    if(text === ""){
+        return;
+    }
+
+    // Display user message
+    addMessage(text, "user");
+
+    // Clear input
+    userInput.value = "";
+
+    // Show typing indicator
+    showTyping();
+
+    // Simulate AI thinking
+    setTimeout(function(){
+
+        hideTyping();
+
+        const reply = getBotReply(text);
+
+        // Show AI response
+        addMessage(reply, "bot");
+
+        // Speak response (strip HTML tags)
+        const plainText = reply.replace(/<[^>]*>/g, "");
+        speak(plainText);
+
+    }, 800);
+
+}
+
+// ======================================
+// AUTO SCROLL
+// ======================================
+
+function scrollToBottom(){
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+}
+
+// ======================================
+// FOCUS INPUT ON LOAD
+// ======================================
+
+window.onload = function(){
+
+    userInput.focus();
+
+    scrollToBottom();
+
+};
+
+// ======================================
+// STOP SPEECH WHEN PAGE CLOSES
+// ======================================
+
+window.addEventListener("beforeunload", function(){
+
+    window.speechSynthesis.cancel();
+
+});
+
+// ======================================
+// WELCOME MESSAGE AFTER 2 SECONDS
+// ======================================
+
+setTimeout(function(){
+
+    addMessage(
+        "💡 Tip: You can ask me about pneumonia, chest X-rays, Grad-CAM, Explainable AI (XAI), CNN models, COVID-19, asthma, diabetes, tuberculosis, prevention, treatment, and more.",
+        "bot"
+    );
+
+}, 2000);
+
+// ======================================
+// RANDOM HEALTH TIP EVERY 60 SECONDS
+// ======================================
+
+setInterval(function(){
+
+    addMessage(
+        "🩺 Health Tip: " + getRandomTip(),
+        "bot"
+    );
+
+}, 60000);
+
+// ======================================
+// EXAMPLE QUESTIONS (for console)
+// ======================================
+
+console.log("Try asking:");
+console.log("- What is pneumonia?");
+console.log("- What are the symptoms of pneumonia?");
+console.log("- Explain Grad-CAM");
+console.log("- What is Explainable AI?");
+console.log("- What is a CNN?");
+console.log("- How is pneumonia treated?");
+console.log("- What causes chest pain?");
+console.log("- What is tuberculosis?");
+console.log("- What is asthma?");
+console.log("- What is diabetes?");
+console.log("- What is oxygen saturation?");
+console.log("- How can I prevent pneumonia?");
+console.log("- What is COVID-19?");
+console.log("- Tell me about lung cancer.");
+
+</script>
+
+</body>
+</html>

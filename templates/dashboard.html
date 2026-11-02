@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+AI Pneumonia Detection Dashboard
+</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',Arial,sans-serif;
+}
+
+body{
+
+background:
+linear-gradient(
+135deg,
+#020617,
+#07111d,
+#0b1b2c
+);
+
+color:white;
+padding:25px;
+overflow-x:hidden;
+
+}
+
+/* ==========================
+SCROLLBAR
+========================== */
+
+::-webkit-scrollbar{
+width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+background:#2563eb;
+border-radius:20px;
+}
+
+/* ==========================
+HEADER
+========================== */
+
+.hero{
+
+background:
+linear-gradient(
+135deg,
+#1e3a8a,
+#2563eb,
+#0ea5e9
+);
+
+padding:35px;
+
+border-radius:30px;
+
+margin-bottom:25px;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,.35);
+
+}
+
+.hero-top{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+gap:20px;
+
+}
+
+.hero h1{
+
+font-size:48px;
+font-weight:800;
+margin-bottom:12px;
+
+}
+
+.hero p{
+
+font-size:20px;
+color:#dbeafe;
+line-height:34px;
+
+}
+
+/* ==========================
+STATUS BADGES
+========================== */
+
+.badges{
+
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+margin-top:20px;
+
+}
+
+.badge{
+
+padding:12px 18px;
+
+background:
+rgba(255,255,255,.15);
+
+backdrop-filter:blur(8px);
+
+border-radius:18px;
+
+font-size:16px;
+font-weight:600;
+
+}
+
+/* ==========================
+GRID
+========================== */
+
+.grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(260px,1fr));
+
+gap:22px;
+
+margin-bottom:25px;
+
+}
+
+/* ==========================
+CARD
+========================== */
+
+.card{
+
+background:#0f172a;
+
+padding:28px;
+
+border-radius:25px;
+
+border:
+1px solid rgba(255,255,255,.05);
+
+box-shadow:
+0 10px 25px rgba(0,0,0,.25);
+
+transition:.3s;
+
+}
+
+.card:hover{
+
+transform:translateY(-4px);
+
+}
+
+.card h3{
+
+font-size:20px;
+margin-bottom:12px;
+
+}
+
+.card h1{
+
+font-size:42px;
+margin-bottom:10px;
+
+}
+
+.card p{
+
+font-size:16px;
+color:#94a3b8;
+line-height:28px;
+
+}
+
+/* ==========================
+COLORS
+========================== */
+
+.blue{
+color:#38bdf8;
+}
+
+.green{
+color:#22c55e;
+}
+
+.orange{
+color:#f59e0b;
+}
+
+.red{
+color:#ef4444;
+}
+
+.purple{
+color:#a855f7;
+}
+
+/* ==========================
+CHART
+========================== */
+
+.chart-box{
+
+background:#0f172a;
+
+padding:25px;
+
+border-radius:25px;
+
+margin-bottom:25px;
+
+box-shadow:
+0 10px 25px rgba(0,0,0,.25);
+
+}
+
+.chart-box h2{
+
+margin-bottom:20px;
+
+font-size:28px;
+
+}
+
+/* ==========================
+FOOTER
+========================== */
+
+.footer{
+
+background:#030712;
+
+padding:22px;
+
+border-radius:25px;
+
+display:flex;
+
+justify-content:space-between;
+
+flex-wrap:wrap;
+
+gap:15px;
+
+font-size:18px;
+
+margin-top:20px;
+
+border:
+1px solid rgba(255,255,255,.06);
+
+}
+
+/* ==========================
+RESPONSIVE
+========================== */
+
+@media(max-width:768px){
+
+.hero h1{
+
+font-size:34px;
+
+}
+
+.hero p{
+
+font-size:16px;
+
+}
+
+.card h1{
+
+font-size:30px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- ==========================
+HERO SECTION
+========================== -->
+
+<div class="hero">
+
+<div class="hero-top">
+
+<div>
+
+<h1>
+🫁 AI Pneumonia Detection System
+</h1>
+
+<p>
+
+Deep Learning • Explainable AI • Medical Decision Support
+
+</p>
+
+<div class="badges">
+
+<div class="badge">
+🟢 AI Online
+</div>
+
+<div class="badge">
+🧠 5 AI Models
+</div>
+
+<div class="badge">
+🔥 Grad-CAM Enabled
+</div>
+
+<div class="badge">
+📄 PDF Reports Ready
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- PART 2 STARTS HERE -->
+
+<!-- ==========================
+LIVE STATISTICS
+========================== -->
+
+<div class="grid">
+
+<div class="card">
+
+<h3 class="blue">
+<i class="fa-solid fa-lungs"></i>
+ Latest Prediction
+</h3>
+
+<h1>
+{{ session.get('result','No Prediction') }}
+</h1>
+
+<p>
+Most recent AI diagnosis result
+</p>
+
+</div>
+
+<div class="card">
+
+<h3 class="green">
+<i class="fa-solid fa-chart-line"></i>
+ Confidence
+</h3>
+
+<h1>
+{{ session.get('confidence',0) }}%
+</h1>
+
+<p>
+AI prediction confidence score
+</p>
+
+</div>
+
+<div class="card">
+
+<h3 class="purple">
+<i class="fa-solid fa-user"></i>
+ Patient
+</h3>
+
+<h1>
+{{ session.get('name','N/A') }}
+</h1>
+
+<p>
+{{ session.get('gender','N/A') }}
+</p>
+
+</div>
+
+<div class="card">
+
+<h3 class="orange">
+<i class="fa-solid fa-brain"></i>
+ AI Models
+</h3>
+
+<h1>
+5
+</h1>
+
+<p>
+DenseNet121, DenseNet201, Xception,
+EfficientNetB3 & MobileNetV2
+</p>
+
+</div>
+
+</div>
+
+<!-- ==========================
+AI SYSTEM STATUS
+========================== -->
+
+<div class="grid">
+
+<div class="card">
+
+<h3 class="green">
+🟢 AI Engine
+</h3>
+
+<h1>ONLINE</h1>
+
+<p>
+Deep learning inference service is active.
+</p>
+
+</div>
+
+<div class="card">
+
+<h3 class="blue">
+🔥 Explainable AI
+</h3>
+
+<h1>ACTIVE</h1>
+
+<p>
+Grad-CAM visualization is enabled.
+</p>
+
+</div>
+
+<div class="card">
+
+<h3 class="orange">
+📄 PDF Reports
+</h3>
+
+<h1>READY</h1>
+
+<p>
+Medical reports can be generated instantly.
+</p>
+
+</div>
+
+<div class="card">
+
+<h3 class="red">
+💾 Database
+</h3>
+
+<h1>CONNECTED</h1>
+
+<p>
+Patient records and predictions are accessible.
+</p>
+
+</div>
+
+</div>
+
+<!-- ==========================
+MODEL INFORMATION
+========================== -->
+
+<div class="card">
+
+<h3 style="font-size:28px;margin-bottom:20px;">
+🧠 Ensemble Deep Learning Models
+</h3>
+
+<p>
+✅ DenseNet121<br><br>
+
+✅ DenseNet201<br><br>
+
+✅ Xception<br><br>
+
+✅ EfficientNetB3<br><br>
+
+✅ MobileNetV2<br><br>
+
+🎯 Final prediction is produced using an
+ensemble strategy to improve robustness and reliability.
+</p>
+
+</div>
+
+<!-- ==========================
+HEALTH RECOMMENDATION
+========================== -->
+
+<div class="card">
+
+<h3 style="font-size:28px;margin-bottom:20px;">
+💡 AI Health Recommendation
+</h3>
+
+<p>
+
+Maintain good respiratory health by avoiding smoking,
+washing your hands regularly, staying hydrated,
+eating a balanced diet, exercising frequently,
+and seeking medical attention if symptoms such as
+persistent cough, fever, chest pain, or breathing
+difficulty occur.
+
+</p>
+
+</div>
+
+<!-- ==========================
+PART 3 STARTS HERE
+========================== -->
+
+<!-- ==========================
+PREDICTION OVERVIEW CHART
+========================== -->
+
+<div class="chart-box">
+
+<h2>
+📈 Prediction Overview
+</h2>
+
+<canvas id="predictionChart" height="90"></canvas>
+
+</div>
+
+<!-- ==========================
+MODEL PERFORMANCE CHART
+========================== -->
+
+<div class="chart-box">
+
+<h2>
+📊 AI Model Performance
+</h2>
+
+<canvas id="modelChart" height="90"></canvas>
+
+</div>
+
+<!-- ==========================
+SYSTEM MONITORING
+========================== -->
+
+<div class="grid">
+
+<div class="card">
+
+<h3 class="green">
+⚡ Processing Time
+</h3>
+
+<h1>
+0.42s
+</h1>
+
+<p>
+Average inference time per scan
+</p>
+
+</div>
+
+<div class="card">
+
+<h3 class="blue">
+🩻 X-Ray Validation
+</h3>
+
+<h1>
+PASSED
+</h1>
+
+<p>
+Chest X-ray verification enabled
+</p>
+
+</div>
+
+<div class="card">
+
+<h3 class="purple">
+🫁 Explainability
+</h3>
+
+<h1>
+Grad-CAM
+</h1>
+
+<p>
+Heatmap generation available
+</p>
+
+</div>
+
+<div class="card">
+
+<h3 class="orange">
+📋 PDF Reports
+</h3>
+
+<h1>
+AUTO
+</h1>
+
+<p>
+Professional medical reports supported
+</p>
+
+</div>
+
+</div>
+
+<!-- ==========================
+AI PIPELINE
+========================== -->
+
+<div class="card">
+
+<h3 style="font-size:30px;margin-bottom:20px;">
+🔄 AI Diagnosis Workflow
+</h3>
+
+<p style="font-size:18px;line-height:2;">
+
+📤 Upload Chest X-Ray
+
+<br>⬇️
+
+🩻 Validate Image
+
+<br>⬇️
+
+🫁 Lung Segmentation
+
+<br>⬇️
+
+🧠 Ensemble Deep Learning Prediction
+
+<br>⬇️
+
+🔥 Grad-CAM Explainability
+
+<br>⬇️
+
+📊 Confidence & Severity Estimation
+
+<br>⬇️
+
+📄 Generate Professional Medical Report
+
+</p>
+
+</div>
+
+<!-- ==========================
+FOOTER
+========================== -->
+
+<div class="footer">
+
+<div>
+🟢 System Status:
+<b class="green">ONLINE</b>
+</div>
+
+<div id="liveDate">
+📅 Loading...
+</div>
+
+<div id="liveTime">
+🕒 Loading...
+</div>
+
+<div>
+🤖 AI Version:
+<b>v2.0</b>
+</div>
+
+</div>
+
+<script>
+
+/* ==========================
+LIVE DATE & TIME
+========================== */
+
+function updateClock(){
+
+    const now = new Date();
+
+    document.getElementById("liveDate").innerHTML =
+        "📅 " + now.toDateString();
+
+    document.getElementById("liveTime").innerHTML =
+        "🕒 " + now.toLocaleTimeString();
+
+}
+
+setInterval(updateClock,1000);
+updateClock();
+
+/* ==========================
+PREDICTION CHART
+========================== */
+
+new Chart(
+document.getElementById("predictionChart"),
+{
+type:"line",
+
+data:{
+
+labels:[
+"Mon","Tue","Wed","Thu","Fri","Sat","Sun"
+],
+
+datasets:[{
+
+label:"Predictions",
+
+data:[
+12,18,15,22,19,25,30
+],
+
+borderColor:"#38bdf8",
+
+backgroundColor:"rgba(56,189,248,0.15)",
+
+fill:true,
+
+tension:0.4
+
+}]
+
+},
+
+options:{
+responsive:true,
+plugins:{
+legend:{
+labels:{
+color:"white"
+}
+}
+},
+scales:{
+x:{
+ticks:{color:"white"},
+grid:{color:"rgba(255,255,255,.08)"}
+},
+y:{
+ticks:{color:"white"},
+grid:{color:"rgba(255,255,255,.08)"}
+}
+}
+}
+
+});
+
+/* ==========================
+MODEL PERFORMANCE
+========================== */
+
+new Chart(
+document.getElementById("modelChart"),
+{
+type:"bar",
+
+data:{
+
+labels:[
+"DenseNet121",
+"DenseNet201",
+"Xception",
+"EfficientNetB3",
+"MobileNetV2"
+],
+
+datasets:[{
+
+label:"Validation Accuracy (%)",
+
+data:[
+95.3,
+95.0,
+94.8,
+95.6,
+94.7
+],
+
+backgroundColor:[
+"#38bdf8",
+"#22c55e",
+"#f59e0b",
+"#a855f7",
+"#ef4444"
+]
+
+}]
+
+},
+
+options:{
+responsive:true,
+plugins:{
+legend:{
+labels:{
+color:"white"
+}
+}
+},
+scales:{
+x:{
+ticks:{color:"white"},
+grid:{color:"rgba(255,255,255,.08)"}
+},
+y:{
+beginAtZero:true,
+max:100,
+ticks:{color:"white"},
+grid:{color:"rgba(255,255,255,.08)"}
+}
+}
+}
+
+});
+
+</script>
+
+</body>
+</html>

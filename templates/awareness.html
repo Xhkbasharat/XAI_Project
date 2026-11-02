@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Pneumonia Awareness
+</title>
+
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+/>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+rel="stylesheet"
+/>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
+background:
+linear-gradient(
+135deg,
+#020617,
+#071427,
+#0b1d34
+);
+
+min-height:100vh;
+overflow-x:hidden;
+color:white;
+}
+
+body::before{
+
+content:'';
+
+position:fixed;
+
+top:-200px;
+left:-150px;
+
+width:500px;
+height:500px;
+
+background:
+rgba(14,165,255,.15);
+
+filter:blur(140px);
+
+z-index:-1;
+}
+
+body::after{
+
+content:'';
+
+position:fixed;
+
+right:-150px;
+bottom:-150px;
+
+width:450px;
+height:450px;
+
+background:
+rgba(37,99,235,.12);
+
+filter:blur(140px);
+
+z-index:-1;
+}
+
+.wrapper{
+padding:40px;
+}
+
+.topbar{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+flex-wrap:wrap;
+
+gap:20px;
+
+margin-bottom:35px;
+}
+
+.title-area h1{
+
+font-size:52px;
+font-weight:800;
+
+background:
+linear-gradient(
+90deg,
+#38bdf8,
+#2563eb,
+#60a5fa
+);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.title-area p{
+
+margin-top:10px;
+
+font-size:18px;
+
+color:#94a3b8;
+}
+
+.dashboard-btn{
+
+padding:16px 28px;
+
+border-radius:18px;
+
+text-decoration:none;
+font-size:18px;
+font-weight:700;
+
+background:
+linear-gradient(
+90deg,
+#0ea5ff,
+#2563eb
+);
+
+color:white;
+
+box-shadow:
+0 0 25px rgba(14,165,255,.25);
+
+transition:.3s;
+}
+
+.dashboard-btn:hover{
+transform:translateY(-3px);
+}
+
+.hero{
+
+background:
+rgba(12,20,36,.85);
+
+border:
+1px solid rgba(255,255,255,.08);
+
+backdrop-filter:
+blur(18px);
+
+border-radius:40px;
+
+padding:45px;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:40px;
+flex-wrap:wrap;
+
+margin-bottom:35px;
+}
+
+.hero-text{
+flex:1;
+min-width:320px;
+}
+
+.hero-text h2{
+
+font-size:48px;
+font-weight:800;
+
+margin-bottom:20px;
+}
+
+.hero-text p{
+
+font-size:18px;
+line-height:34px;
+
+color:#cbd5e1;
+}
+
+.hero-icon{
+
+width:180px;
+height:180px;
+
+border-radius:40px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:80px;
+
+background:
+rgba(255,255,255,.06);
+
+border:
+1px solid rgba(255,255,255,.08);
+
+box-shadow:
+0 0 40px rgba(14,165,255,.2);
+}
+
+.grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(320px,1fr));
+
+gap:25px;
+}
+
+.card{
+
+background:
+rgba(12,20,36,.85);
+
+border:
+1px solid rgba(255,255,255,.08);
+
+backdrop-filter:
+blur(18px);
+
+padding:30px;
+
+border-radius:35px;
+
+transition:.4s;
+
+box-shadow:
+0 10px 30px rgba(0,0,0,.35);
+}
+
+.card:hover{
+
+transform:
+translateY(-8px);
+}
+
+.card-icon{
+
+width:80px;
+height:80px;
+
+border-radius:25px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:34px;
+
+margin-bottom:20px;
+
+background:
+rgba(255,255,255,.06);
+}
+
+.card h3{
+
+font-size:28px;
+margin-bottom:16px;
+}
+
+.card p{
+
+line-height:32px;
+font-size:16px;
+color:#cbd5e1;
+}
+
+.red{
+color:#ef4444;
+}
+
+.green{
+color:#22c55e;
+}
+
+.orange{
+color:#f59e0b;
+}
+
+.blue{
+color:#38bdf8;
+}
+
+.purple{
+color:#a855f7;
+}
+
+@media(max-width:768px){
+
+.wrapper{
+padding:20px;
+}
+
+.title-area h1{
+font-size:36px;
+}
+
+.hero-text h2{
+font-size:34px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<div class="topbar">
+
+<div class="title-area">
+
+<h1>
+
+<i class="fa-solid fa-lungs"></i>
+
+Pneumonia Awareness
+
+</h1>
+
+<p>
+
+Medical knowledge & prevention center
+
+</p>
+
+</div>
+
+<a
+href="/dashboard"
+class="dashboard-btn">
+
+← Dashboard
+
+</a>
+
+</div>
+
+<div class="hero">
+
+<div class="hero-text">
+
+<h2>
+
+Understand Pneumonia Early
+
+</h2>
+
+<p>
+
+Pneumonia is a serious lung infection
+that inflames air sacs in one or both lungs.
+Early awareness, prevention and timely
+medical consultation can save lives.
+
+</p>
+
+</div>
+
+<div class="hero-icon">
+
+🫁
+
+</div>
+
+</div>
+
+<div class="grid">
+
+<div class="card">
+
+<div class="card-icon red">
+<i class="fa-solid fa-lungs-virus"></i>
+</div>
+
+<h3 class="red">
+What is Pneumonia?
+</h3>
+
+<p>
+
+Pneumonia is a lung infection that causes
+inflammation in the air sacs of one or
+both lungs. These air sacs may fill with
+fluid or pus, causing breathing problems,
+cough, fever and chest discomfort.
+
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon orange">
+<i class="fa-solid fa-virus"></i>
+</div>
+
+<h3 class="orange">
+Common Causes
+</h3>
+
+<p>
+
+• Bacterial infections<br>
+• Viral infections<br>
+• Fungal infections<br>
+• Weak immune system<br>
+• Smoking and lung damage<br>
+• Untreated flu or respiratory illness
+
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon blue">
+<i class="fa-solid fa-heart-pulse"></i>
+</div>
+
+<h3 class="blue">
+Symptoms
+</h3>
+
+<p>
+
+• Fever & chills<br>
+• Difficulty breathing<br>
+• Chest pain<br>
+• Cough with mucus<br>
+• Fast breathing<br>
+• Fatigue and weakness
+
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon green">
+<i class="fa-solid fa-shield-virus"></i>
+</div>
+
+<h3 class="green">
+Prevention
+</h3>
+
+<p>
+
+• Wash hands regularly<br>
+• Avoid smoking<br>
+• Stay hydrated<br>
+• Take vaccinations<br>
+• Eat healthy food<br>
+• Maintain immunity
+
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon purple">
+<i class="fa-solid fa-triangle-exclamation"></i>
+</div>
+
+<h3 class="purple">
+Risk Factors
+</h3>
+
+<p>
+
+Higher risk in:<br><br>
+
+• Children<br>
+• Elderly people<br>
+• Asthma patients<br>
+• Diabetes patients<br>
+• Smokers<br>
+• Weak immunity
+
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon red">
+<i class="fa-solid fa-truck-medical"></i>
+</div>
+
+<h3 class="red">
+Emergency Signs
+</h3>
+
+<p>
+
+Seek urgent medical care if:
+
+<br><br>
+
+• Severe breathing issue<br>
+• Blue lips or nails<br>
+• High fever<br>
+• Confusion<br>
+• Severe chest pain
+
+</p>
+
+</div>
+
+</div>
+
+<!-- MEDICAL FACTS -->
+
+<div
+style="
+margin-top:40px;
+background:rgba(12,20,36,.85);
+border:1px solid rgba(255,255,255,.08);
+border-radius:35px;
+padding:40px;
+backdrop-filter:blur(18px);
+">
+
+<h2
+style="
+font-size:38px;
+margin-bottom:30px;
+">
+
+📊 Pneumonia Awareness Statistics
+
+</h2>
+
+<div
+style="
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+">
+
+<div
+style="
+background:rgba(255,255,255,.05);
+padding:30px;
+border-radius:30px;
+text-align:center;
+">
+
+<h1
+style="
+font-size:48px;
+color:#38bdf8;
+margin-bottom:10px;
+">
+
+80%
+
+</h1>
+
+<p
+style="
+font-size:18px;
+color:#cbd5e1;
+">
+
+Cases improve with early treatment
+
+</p>
+
+</div>
+
+<div
+style="
+background:rgba(255,255,255,.05);
+padding:30px;
+border-radius:30px;
+text-align:center;
+">
+
+<h1
+style="
+font-size:48px;
+color:#22c55e;
+margin-bottom:10px;
+">
+
+65%
+
+</h1>
+
+<p
+style="
+font-size:18px;
+color:#cbd5e1;
+">
+
+Risk reduced through prevention
+
+</p>
+
+</div>
+
+<div
+style="
+background:rgba(255,255,255,.05);
+padding:30px;
+border-radius:30px;
+text-align:center;
+">
+
+<h1
+style="
+font-size:48px;
+color:#ef4444;
+margin-bottom:10px;
+">
+
+24/7
+
+</h1>
+
+<p
+style="
+font-size:18px;
+color:#cbd5e1;
+">
+
+Medical care recommended in emergencies
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- FAQ -->
+
+<div
+style="
+margin-top:40px;
+background:rgba(12,20,36,.85);
+border:1px solid rgba(255,255,255,.08);
+border-radius:35px;
+padding:40px;
+backdrop-filter:blur(18px);
+">
+
+<h2
+style="
+font-size:38px;
+margin-bottom:30px;
+">
+
+❓ Frequently Asked Questions
+
+</h2>
+
+<div
+style="
+display:flex;
+flex-direction:column;
+gap:25px;
+">
+
+<div>
+
+<h3
+style="
+font-size:24px;
+color:#38bdf8;
+margin-bottom:10px;
+">
+
+Can pneumonia be cured?
+
+</h3>
+
+<p
+style="
+line-height:32px;
+color:#cbd5e1;
+">
+
+Yes. Early diagnosis and proper medical
+treatment significantly improve recovery.
+
+</p>
+
+</div>
+
+<div>
+
+<h3
+style="
+font-size:24px;
+color:#38bdf8;
+margin-bottom:10px;
+">
+
+Is pneumonia dangerous?
+
+</h3>
+
+<p
+style="
+line-height:32px;
+color:#cbd5e1;
+">
+
+It can become serious, especially in
+children, elderly people and people with
+weak immunity.
+
+</p>
+
+</div>
+
+<div>
+
+<h3
+style="
+font-size:24px;
+color:#38bdf8;
+margin-bottom:10px;
+">
+
+Can vaccines prevent pneumonia?
+
+</h3>
+
+<p
+style="
+line-height:32px;
+color:#cbd5e1;
+">
+
+Vaccinations help reduce risk and are
+recommended for high-risk groups.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- PREVENTION CHECKLIST -->
+
+<div
+style="
+margin-top:40px;
+background:rgba(12,20,36,.85);
+border:1px solid rgba(255,255,255,.08);
+border-radius:35px;
+padding:40px;
+backdrop-filter:blur(18px);
+">
+
+<h2
+style="
+font-size:38px;
+margin-bottom:30px;
+">
+
+🛡 Prevention Checklist
+
+</h2>
+
+<div
+style="
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(280px,1fr));
+gap:25px;
+">
+
+<div
+style="
+background:rgba(255,255,255,.05);
+padding:30px;
+border-radius:28px;
+">
+
+<h3
+style="
+color:#22c55e;
+margin-bottom:15px;
+font-size:24px;
+">
+
+✅ Healthy Habits
+
+</h3>
+
+<p
+style="
+line-height:32px;
+color:#cbd5e1;
+">
+
+• Wash hands regularly<br>
+• Eat healthy food<br>
+• Drink enough water<br>
+• Exercise regularly<br>
+• Get enough sleep
+
+</p>
+
+</div>
+
+
+<div
+style="
+background:rgba(255,255,255,.05);
+padding:30px;
+border-radius:28px;
+">
+
+<h3
+style="
+color:#38bdf8;
+margin-bottom:15px;
+font-size:24px;
+">
+
+💉 Vaccination Awareness
+
+</h3>
+
+<p
+style="
+line-height:32px;
+color:#cbd5e1;
+">
+
+Vaccinations help reduce pneumonia risk,
+especially for children, elderly adults,
+and high-risk patients.
+
+</p>
+
+</div>
+
+
+<div
+style="
+background:rgba(255,255,255,.05);
+padding:30px;
+border-radius:28px;
+">
+
+<h3
+style="
+color:#ef4444;
+margin-bottom:15px;
+font-size:24px;
+">
+
+🚭 Avoid Risk Factors
+
+</h3>
+
+<p
+style="
+line-height:32px;
+color:#cbd5e1;
+">
+
+Avoid smoking, untreated respiratory
+illness, polluted environments and weak
+health routines.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- FOOTER -->
+
+<div
+style="
+margin-top:40px;
+text-align:center;
+padding:30px;
+color:#94a3b8;
+font-size:17px;
+">
+
+🫁 AI Pneumonia Detection System —
+Awareness & Prevention Center
+
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AI-Powered Pneumonia Detection</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    width:100%;
+    height:100vh;
+    overflow:hidden;
+    color:white;
+    position:relative;
+    background:black;
+}
+
+/* ================= BACKGROUND ================= */
+
+body::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-size:cover;
+    background-position:center;
+    filter:brightness(1.1);
+    animation:bgSlider 25s infinite;
+    z-index:-2;
+    transition:1s;
+}
+
+body::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.60);
+    z-index:-1;
+}
+
+/* ================= 30 XRAY BACKGROUND IMAGES ================= */
+
+@keyframes bgSlider{
+
+0%{
+background-image:url('https://images.unsplash.com/photo-1588776814546-bc2d8f4f2b8d?q=80&w=1600');
+}
+
+3%{
+background-image:url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1600');
+}
+
+6%{
+background-image:url('https://images.unsplash.com/photo-1538108149393-fbbd81895907?q=80&w=1600');
+}
+
+9%{
+background-image:url('https://images.unsplash.com/photo-1581595219315-a187dd40c322?q=80&w=1600');
+}
+
+12%{
+background-image:url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1600');
+}
+
+15%{
+background-image:url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1600');
+}
+
+18%{
+background-image:url('https://images.unsplash.com/photo-1516549655669-df8d2ae88c8d?q=80&w=1600');
+}
+
+21%{
+background-image:url('https://images.unsplash.com/photo-1580281657527-47d89d9f44f1?q=80&w=1600');
+}
+
+24%{
+background-image:url('https://images.unsplash.com/photo-1505751172876-fa1923c5c528?q=80&w=1600');
+}
+
+27%{
+background-image:url('https://images.unsplash.com/photo-1584982751601-97dcc096659c?q=80&w=1600');
+}
+
+30%{
+background-image:url('https://images.unsplash.com/photo-1581056771107-24ca5f033842?q=80&w=1600');
+}
+
+33%{
+background-image:url('https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?q=80&w=1600');
+}
+
+36%{
+background-image:url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1600');
+}
+
+39%{
+background-image:url('https://images.unsplash.com/photo-1579154204601-01588f351e67?q=80&w=1600');
+}
+
+42%{
+background-image:url('https://images.unsplash.com/photo-1584515933487-779824d29309?q=80&w=1600');
+}
+
+45%{
+background-image:url('https://images.unsplash.com/photo-1576671081837-49000212a370?q=80&w=1600');
+}
+
+48%{
+background-image:url('https://images.unsplash.com/photo-1512678080530-7760d81faba6?q=80&w=1600');
+}
+
+51%{
+background-image:url('https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=1600');
+}
+
+54%{
+background-image:url('https://images.unsplash.com/photo-1579165466741-7f35e4755660?q=80&w=1600');
+}
+
+57%{
+background-image:url('https://images.unsplash.com/photo-1511174511562-5f7f18b874f8?q=80&w=1600');
+}
+
+60%{
+background-image:url('https://images.unsplash.com/photo-1585435557343-3b092031d4f7?q=80&w=1600');
+}
+
+63%{
+background-image:url('https://images.unsplash.com/photo-1519494080410-f9aa8f52f12f?q=80&w=1600');
+}
+
+66%{
+background-image:url('https://images.unsplash.com/photo-1582560475093-ba66accbc424?q=80&w=1600');
+}
+
+69%{
+background-image:url('https://images.unsplash.com/photo-1504813184591-01572f98c85f?q=80&w=1600');
+}
+
+72%{
+background-image:url('https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?q=80&w=1600');
+}
+
+75%{
+background-image:url('https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=1600');
+}
+
+78%{
+background-image:url('https://images.unsplash.com/photo-1584433144859-1fc3ab64a957?q=80&w=1600');
+}
+
+81%{
+background-image:url('https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?q=80&w=1600');
+}
+
+84%{
+background-image:url('https://images.unsplash.com/photo-1504439468489-c8920d796a29?q=80&w=1600');
+}
+
+87%{
+background-image:url('https://images.unsplash.com/photo-1571772996211-2f02c9727629?q=80&w=1600');
+}
+
+90%{
+background-image:url('https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?q=80&w=1600');
+}
+
+93%{
+background-image:url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=1600');
+}
+
+96%{
+background-image:url('https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?q=80&w=1600');
+}
+
+100%{
+background-image:url('https://images.unsplash.com/photo-1588776814546-bc2d8f4f2b8d?q=80&w=1600');
+}
+
+}
+
+/* ================= TOPBAR ================= */
+
+.topbar{
+    width:100%;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 28px;
+    background:rgba(0,0,0,0.25);
+    border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.logo i{
+    color:#1e90ff;
+    font-size:24px;
+}
+
+/* MOVING TEXT */
+
+.marquee{
+    width:55%;
+    overflow:hidden;
+    white-space:nowrap;
+}
+
+.marquee span{
+    display:inline-block;
+    padding-left:100%;
+    animation:moveText 12s linear infinite;
+    color:#1e90ff;
+    font-size:14px;
+    font-weight:bold;
+}
+
+@keyframes moveText{
+
+from{
+transform:translateX(0);
+}
+
+to{
+transform:translateX(-100%);
+}
+
+}
+
+/* ================= MAIN CONTAINER ================= */
+
+.container{
+    width:100%;
+    height:calc(100vh - 60px);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:20px 45px;
+    gap:30px;
+}
+
+/* ================= LEFT ================= */
+
+.left{
+    width:58%;
+}
+
+.left h1{
+    font-size:72px;
+    line-height:75px;
+    margin-bottom:20px;
+    font-weight:900;
+}
+
+.left h1 span{
+    color:#1e90ff;
+    display:block;
+}
+
+.left p{
+    font-size:22px;
+    line-height:35px;
+    max-width:720px;
+    margin-bottom:30px;
+}
+
+/* FEATURES */
+
+.features{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.feature{
+    display:flex;
+    align-items:center;
+    gap:16px;
+}
+
+.feature i{
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    border:2px solid #1e90ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#1e90ff;
+    font-size:22px;
+    background:rgba(30,144,255,0.08);
+}
+
+.feature-text h3{
+    font-size:28px;
+    margin-bottom:3px;
+}
+
+.feature-text p{
+    font-size:16px;
+    line-height:24px;
+    margin:0;
+}
+
+/* ================= LOGIN BOX ================= */
+
+.login-box{
+    width:520px;
+    min-height:500px;
+    padding:22px 34px;
+    background:rgba(0,0,0,0.70);
+    border:2px solid #1e90ff;
+    border-radius:24px;
+    backdrop-filter:blur(14px);
+
+    box-shadow:
+    0 0 20px rgba(30,144,255,0.5),
+    0 0 40px rgba(30,144,255,0.2);
+}
+
+/* USER ICON */
+
+.user-icon{
+    width:75px;
+    height:75px;
+    border-radius:50%;
+    border:2px solid #1e90ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:auto;
+    margin-bottom:12px;
+}
+
+.user-icon i{
+    font-size:28px;
+    color:#1e90ff;
+}
+
+/* LOGIN TITLE */
+
+.login-box h2{
+    text-align:center;
+    font-size:34px;
+    margin-bottom:4px;
+}
+
+.subtitle{
+    text-align:center;
+    font-size:15px;
+    color:#ccc;
+    margin-bottom:20px;
+}
+
+/* INPUTS */
+
+.input-group{
+    margin-bottom:14px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:6px;
+    font-size:17px;
+    font-weight:bold;
+}
+
+.input-group input{
+    width:100%;
+    padding:13px 14px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,0.1);
+    background:rgba(255,255,255,0.05);
+    color:white;
+    font-size:15px;
+    outline:none;
+}
+
+.input-group input:focus{
+    border-color:#1e90ff;
+}
+
+/* OPTIONS */
+
+.options{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:14px;
+    font-size:13px;
+}
+
+.options a{
+    color:#1e90ff;
+    text-decoration:none;
+}
+
+/* BUTTONS */
+
+.btn{
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:10px;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+    margin-bottom:10px;
+}
+
+.btn:hover{
+    transform:scale(1.02);
+}
+
+.login-btn{
+    background:linear-gradient(to right,#0066ff,#00d4ff);
+    color:white;
+}
+
+.guest-btn{
+    background:transparent;
+    border:2px solid #1e90ff;
+    color:white;
+}
+
+.create-btn{
+    background:linear-gradient(to right,#00c853,#00ff99);
+    color:white;
+}
+
+/* DIVIDER */
+
+.divider{
+    text-align:center;
+    margin:8px 0;
+    font-size:15px;
+}
+
+/* FOOTER */
+
+.footer{
+    text-align:center;
+    margin-top:4px;
+    font-size:12px;
+    color:#ccc;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+
+body{
+overflow:auto;
+}
+
+.container{
+flex-direction:column;
+height:auto;
+padding:20px;
+}
+
+.left{
+width:100%;
+text-align:center;
+}
+
+.left h1{
+font-size:52px;
+line-height:58px;
+}
+
+.left p{
+font-size:18px;
+line-height:30px;
+margin:auto;
+margin-bottom:25px;
+}
+
+.feature{
+justify-content:center;
+}
+
+.login-box{
+width:100%;
+max-width:420px;
+}
+
+.marquee{
+display:none;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- TOPBAR -->
+
+<div class="topbar">
+
+<div class="logo">
+<i class="fa-solid fa-lungs"></i>
+<span>AI-Powered Pneumonia Detection</span>
+</div>
+
+<div class="marquee">
+<span>
+AI Healthcare Solution • Pneumonia Detection System • Real-Time X-Ray Analysis • Deep Learning Medical Platform • Secure AI Diagnosis • Advanced Chest X-Ray Detection
+</span>
+</div>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="container">
+
+<!-- LEFT SECTION -->
+
+<div class="left">
+
+<h1>
+AI-Powered
+<span>Pneumonia</span>
+Detection
+</h1>
+
+<p>
+An intelligent deep learning system for accurate and real-time detection of pneumonia from chest X-ray images.
+</p>
+
+<div class="features">
+
+<div class="feature">
+<i class="fa-solid fa-crosshairs"></i>
+
+<div class="feature-text">
+<h3>High Accuracy</h3>
+<p>Advanced AI model for precise results</p>
+</div>
+
+</div>
+
+<div class="feature">
+
+<i class="fa-solid fa-bolt"></i>
+
+<div class="feature-text">
+<h3>Real-Time Prediction</h3>
+<p>Get instant analysis and detailed reports</p>
+</div>
+
+</div>
+
+<div class="feature">
+
+<i class="fa-solid fa-shield-heart"></i>
+
+<div class="feature-text">
+<h3>Secure & Reliable</h3>
+<p>Enterprise-grade medical protection</p>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- LOGIN BOX -->
+
+<div class="login-box">
+
+<div class="user-icon">
+<i class="fa-solid fa-user"></i>
+</div>
+
+<h2>Welcome Back</h2>
+
+<p class="subtitle">
+Login to your account
+</p>
+
+<!-- LOGIN FORM -->
+
+<form action="/login" method="POST">
+
+<div class="input-group">
+<label>Username</label>
+
+<input
+type="text"
+name="username"
+placeholder="Enter your username"
+required>
+
+</div>
+
+<div class="input-group">
+<label>Password</label>
+
+<input
+type="password"
+name="password"
+placeholder="Enter your password"
+required>
+
+</div>
+
+<div class="options">
+
+<label>
+<input type="checkbox">
+Remember Me
+</label>
+
+<a href="#">
+Forgot Password?
+</a>
+
+</div>
+
+<button
+type="submit"
+class="btn login-btn">
+
+<i class="fa-solid fa-right-to-bracket"></i>
+Login
+
+</button>
+
+</form>
+
+<!-- GUEST BUTTON -->
+
+<a href="/guest-login">
+
+<button class="btn guest-btn"
+type="button">
+
+<i class="fa-solid fa-users"></i>
+Login as Guest
+
+</button>
+
+</a>
+
+
+<a href="/register">
+
+<button class="btn create-btn"
+type="button">
+
+<i class="fa-solid fa-user-plus"></i>
+Create Account
+
+</button>
+
+</a>
+
+<!-- CREATE ACCOUNT BUTTON -->
+
+
+
+<div class="footer">
+Secure AI Medical Platform
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>

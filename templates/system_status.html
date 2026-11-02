@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Premium AI System Status
+</title>
+
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+/>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+rel="stylesheet"
+/>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
+background:
+linear-gradient(
+135deg,
+#020617,
+#071427,
+#0b1d34
+);
+
+min-height:100vh;
+overflow-x:hidden;
+color:white;
+}
+
+body::before{
+content:'';
+position:fixed;
+width:500px;
+height:500px;
+background:#0ea5ff30;
+filter:blur(140px);
+top:-200px;
+left:-150px;
+z-index:-1;
+}
+
+body::after{
+content:'';
+position:fixed;
+width:450px;
+height:450px;
+background:#2563eb20;
+filter:blur(140px);
+right:-100px;
+bottom:-150px;
+z-index:-1;
+}
+
+.wrapper{
+padding:40px;
+}
+
+.topbar{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:35px;
+flex-wrap:wrap;
+gap:20px;
+}
+
+.title-area h1{
+
+font-size:52px;
+font-weight:800;
+
+background:
+linear-gradient(
+90deg,
+#38bdf8,
+#2563eb,
+#60a5fa
+);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.title-area p{
+font-size:18px;
+color:#94a3b8;
+margin-top:8px;
+}
+
+.dashboard-btn{
+
+background:
+linear-gradient(
+90deg,
+#0ea5ff,
+#2563eb
+);
+
+padding:16px 28px;
+border-radius:18px;
+text-decoration:none;
+color:white;
+font-weight:700;
+font-size:18px;
+
+box-shadow:
+0 0 25px rgba(14,165,255,.3);
+
+transition:.3s;
+}
+
+.dashboard-btn:hover{
+transform:translateY(-3px);
+}
+
+.grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(300px,1fr));
+
+gap:25px;
+}
+
+.card{
+
+position:relative;
+
+background:
+rgba(12,20,36,.85);
+
+border:
+1px solid rgba(255,255,255,.08);
+
+backdrop-filter:
+blur(18px);
+
+padding:30px;
+
+border-radius:32px;
+
+overflow:hidden;
+
+transition:.4s;
+
+box-shadow:
+0 15px 35px rgba(0,0,0,.35);
+}
+
+.card:hover{
+
+transform:
+translateY(-10px);
+
+box-shadow:
+0 25px 50px rgba(0,0,0,.4);
+}
+
+.card::before{
+
+content:'';
+
+position:absolute;
+
+top:-60px;
+right:-60px;
+
+width:180px;
+height:180px;
+
+background:
+radial-gradient(
+circle,
+rgba(14,165,255,.25),
+transparent
+);
+
+border-radius:50%;
+}
+
+.icon-box{
+
+width:80px;
+height:80px;
+
+border-radius:24px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:34px;
+
+margin-bottom:20px;
+
+background:
+rgba(255,255,255,.06);
+
+border:
+1px solid rgba(255,255,255,.08);
+}
+
+.card h2{
+font-size:28px;
+font-weight:700;
+margin-bottom:14px;
+}
+
+.status{
+
+font-size:38px;
+font-weight:800;
+margin-bottom:12px;
+}
+
+.online{
+color:#22c55e;
+}
+
+.running{
+color:#38bdf8;
+}
+
+.ready{
+color:#0ea5ff;
+}
+
+.accuracy{
+color:#facc15;
+}
+
+.desc{
+font-size:16px;
+line-height:28px;
+color:#cbd5e1;
+}
+
+.metric-card{
+
+margin-top:35px;
+
+background:
+rgba(12,20,36,.85);
+
+border:
+1px solid rgba(255,255,255,.08);
+
+border-radius:35px;
+
+padding:35px;
+}
+
+.metric-card h3{
+font-size:34px;
+margin-bottom:30px;
+}
+
+.progress-item{
+margin-bottom:30px;
+}
+
+.progress-title{
+
+display:flex;
+justify-content:space-between;
+
+margin-bottom:12px;
+
+font-size:18px;
+font-weight:600;
+}
+
+.progress{
+
+height:18px;
+border-radius:50px;
+overflow:hidden;
+
+background:
+rgba(255,255,255,.08);
+}
+.progress-bar{
+
+height:100%;
+border-radius:50px;
+
+background:
+linear-gradient(
+90deg,
+#0ea5ff,
+#2563eb
+);
+
+display:flex;
+align-items:center;
+justify-content:flex-end;
+
+padding-right:10px;
+
+font-size:12px;
+font-weight:700;
+color:white;
+}
+
+.live-status{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(240px,1fr));
+
+gap:20px;
+
+margin-top:35px;
+}
+
+.live-box{
+
+background:
+rgba(255,255,255,.04);
+
+border:
+1px solid rgba(255,255,255,.08);
+
+border-radius:28px;
+
+padding:25px;
+
+transition:.3s;
+}
+
+.live-box:hover{
+transform:scale(1.03);
+}
+
+.live-box h4{
+
+font-size:22px;
+margin-bottom:10px;
+}
+
+.live-box p{
+color:#94a3b8;
+font-size:15px;
+}
+
+.pulse{
+
+width:14px;
+height:14px;
+
+background:#22c55e;
+
+border-radius:50%;
+
+display:inline-block;
+margin-right:10px;
+
+animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+
+0%{
+box-shadow:
+0 0 0 0 rgba(34,197,94,.7);
+}
+
+70%{
+box-shadow:
+0 0 0 14px rgba(34,197,94,0);
+}
+
+100%{
+box-shadow:
+0 0 0 0 rgba(34,197,94,0);
+}
+}
+
+.chart-box{
+
+margin-top:40px;
+
+background:
+rgba(255,255,255,.04);
+
+border-radius:30px;
+
+padding:35px;
+
+border:
+1px solid rgba(255,255,255,.08);
+}
+
+.chart-box h3{
+font-size:28px;
+margin-bottom:25px;
+}
+
+.fake-chart{
+
+height:240px;
+
+display:flex;
+align-items:flex-end;
+justify-content:space-between;
+
+gap:18px;
+}
+
+.bar{
+
+width:100%;
+border-radius:30px 30px 10px 10px;
+
+background:
+linear-gradient(
+180deg,
+#38bdf8,
+#2563eb
+);
+
+position:relative;
+}
+
+.bar span{
+
+position:absolute;
+top:-30px;
+left:50%;
+
+transform:translateX(-50%);
+font-size:13px;
+font-weight:700;
+}
+
+.bar1{height:60%;}
+.bar2{height:85%;}
+.bar3{height:95%;}
+.bar4{height:75%;}
+.bar5{height:90%;}
+
+@media(max-width:768px){
+
+.wrapper{
+padding:20px;
+}
+
+.title-area h1{
+font-size:36px;
+}
+
+.status{
+font-size:28px;
+}
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<div class="topbar">
+
+<div class="title-area">
+
+<h1>
+<i class="fa-solid fa-server"></i>
+System Status
+</h1>
+
+<p>
+Premium AI Pneumonia Monitoring Dashboard
+</p>
+
+</div>
+
+<a
+href="/dashboard"
+class="dashboard-btn"
+>
+← Dashboard
+</a>
+
+</div>
+
+<div class="grid">
+
+<div class="card">
+
+<div class="icon-box">
+🟢
+</div>
+
+<h2>AI Model</h2>
+
+<div class="status online">
+ONLINE
+</div>
+
+<p class="desc">
+Deep learning pneumonia detection system is active and responding normally.
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="icon-box">
+⚡
+</div>
+
+<h2>Prediction Server</h2>
+
+<div class="status running">
+RUNNING
+</div>
+
+<p class="desc">
+AI prediction engine is processing X-ray scans without interruption.
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="icon-box">
+📷
+</div>
+
+<h2>Webcam Scanner</h2>
+
+<div class="status ready">
+READY
+</div>
+
+<p class="desc">
+Professional webcam system initialized and available.
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="icon-box">
+📊
+</div>
+
+<h2>Model Accuracy</h2>
+
+<div class="status accuracy">
+98.32%
+</div>
+
+<p class="desc">
+Model performance based on training and testing dataset.
+</p>
+
+</div>
+
+</div>
+<div class="metric-card">
+
+<h3>
+🧠 Live System Metrics
+</h3>
+
+<div class="progress-item">
+
+<div class="progress-title">
+
+<span>
+CPU Usage
+</span>
+
+<span>
+67%
+</span>
+
+</div>
+
+<div class="progress">
+
+<div
+class="progress-bar"
+style="width:67%;">
+
+67%
+
+</div>
+
+</div>
+
+</div>
+
+<div class="progress-item">
+
+<div class="progress-title">
+
+<span>
+RAM Usage
+</span>
+
+<span>
+42%
+</span>
+
+</div>
+
+<div class="progress">
+
+<div
+class="progress-bar"
+style="width:42%;">
+
+42%
+
+</div>
+
+</div>
+
+</div>
+
+<div class="progress-item">
+
+<div class="progress-title">
+
+<span>
+Model Performance
+</span>
+
+<span>
+95%
+</span>
+
+</div>
+
+<div class="progress">
+
+<div
+class="progress-bar"
+style="width:95%;">
+
+95%
+
+</div>
+
+</div>
+
+</div>
+
+<div class="progress-item">
+
+<div class="progress-title">
+
+<span>
+Prediction Speed
+</span>
+
+<span>
+89%
+</span>
+
+</div>
+
+<div class="progress">
+
+<div
+class="progress-bar"
+style="width:89%;">
+
+89%
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="live-status">
+
+<div class="live-box">
+
+<h4>
+
+<span class="pulse"></span>
+
+Patients Analyzed Today
+
+</h4>
+
+<h1>
+143
+</h1>
+
+<p>
+Chest X-ray scans processed today
+</p>
+
+</div>
+
+
+<div class="live-box">
+
+<h4>
+
+<span class="pulse"></span>
+
+Pneumonia Cases
+
+</h4>
+
+<h1>
+28
+</h1>
+
+<p>
+Detected abnormal cases today
+</p>
+
+</div>
+
+
+<div class="live-box">
+
+<h4>
+
+<span class="pulse"></span>
+
+AI Uptime
+
+</h4>
+
+<h1>
+12h 42m
+</h1>
+
+<p>
+Continuous system availability
+</p>
+
+</div>
+
+
+<div class="live-box">
+
+<h4>
+
+<span class="pulse"></span>
+
+Last Scan
+
+</h4>
+
+<h1 id="liveTime">
+Loading...
+</h1>
+
+<p>
+Latest X-ray processing time
+</p>
+
+</div>
+
+</div>
+
+
+<div class="chart-box">
+
+<h3>
+📈 Prediction Analytics
+</h3>
+
+<div class="fake-chart">
+
+<div class="bar bar1">
+<span>Mon</span>
+</div>
+
+<div class="bar bar2">
+<span>Tue</span>
+</div>
+
+<div class="bar bar3">
+<span>Wed</span>
+</div>
+
+<div class="bar bar4">
+<span>Thu</span>
+</div>
+
+<div class="bar bar5">
+<span>Fri</span>
+</div>
+
+<div class="bar bar2">
+<span>Sat</span>
+</div>
+
+<div class="bar bar4">
+<span>Sun</span>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* LIVE TIME */
+
+function updateTime(){
+
+const now =
+new Date();
+
+document
+.getElementById(
+"liveTime"
+)
+.innerHTML =
+
+now.toLocaleTimeString();
+
+}
+
+setInterval(
+updateTime,
+1000
+);
+
+updateTime();
+
+/* RANDOM LIVE METRICS */
+
+function animateMetrics(){
+
+const progressBars =
+document.querySelectorAll(
+".progress-bar"
+);
+
+progressBars.forEach(bar=>{
+
+let current =
+parseInt(
+bar.style.width
+);
+
+const random =
+Math.floor(
+Math.random()*8
+)-4;
+
+let next =
+current + random;
+
+if(next < 20){
+next = 20;
+}
+
+if(next > 99){
+next = 99;
+}
+
+bar.style.width =
+next + "%";
+
+bar.innerHTML =
+next + "%";
+
+const title =
+bar.parentElement
+.previousElementSibling
+.lastElementChild;
+
+title.innerHTML =
+next + "%";
+
+});
+
+}
+
+setInterval(
+animateMetrics,
+4000
+);
+
+</script>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+AI Medical Diagnosis Report
+</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<!-- jsPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+background:#07111d;
+color:white;
+padding:25px;
+overflow-x:hidden;
+}
+
+/* HEADER */
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+gap:20px;
+margin-bottom:25px;
+}
+
+.logo-title{
+display:flex;
+align-items:center;
+gap:18px;
+}
+
+.logo-title i{
+font-size:55px;
+color:#14b8ff;
+}
+
+.logo-title h1{
+font-size:48px;
+font-weight:800;
+}
+
+.header-buttons{
+display:flex;
+gap:14px;
+flex-wrap:wrap;
+}
+
+.btn{
+border:none;
+cursor:pointer;
+padding:16px 28px;
+font-size:18px;
+font-weight:bold;
+border-radius:18px;
+color:white;
+transition:.3s;
+}
+
+.btn:hover{
+transform:translateY(-2px);
+}
+
+.dashboard-btn{
+background:
+linear-gradient(
+90deg,
+#0ea5ff,
+#2563eb
+);
+}
+
+.download-btn{
+background:
+linear-gradient(
+90deg,
+#22c55e,
+#16a34a
+);
+}
+
+/* MAIN GRID */
+
+.main-grid{
+display:grid;
+grid-template-columns:
+2.4fr .8fr;
+gap:24px;
+margin-bottom:25px;
+}
+
+.card{
+background:#0b1b2c;
+padding:28px;
+border-radius:30px;
+box-shadow:
+0 0 20px rgba(0,0,0,.25);
+}
+
+/* BIG XRAY */
+
+.image-grid{
+display:grid;
+grid-template-columns:
+1fr 1fr;
+gap:20px;
+}
+
+.image-card h2{
+font-size:28px;
+margin-bottom:15px;
+}
+
+.image-preview{
+height:520px;
+background:#081827;
+border-radius:28px;
+overflow:hidden;
+display:flex;
+justify-content:center;
+align-items:center;
+border:
+2px solid rgba(255,255,255,.08);
+}
+
+.image-preview img{
+width:100%;
+height:100%;
+object-fit:contain;
+}
+
+/* RESULT */
+
+.result-card{
+margin-top:25px;
+background:#10253c;
+padding:28px;
+border-radius:25px;
+}
+
+.result-small{
+font-size:18px;
+color:#94a3b8;
+margin-bottom:10px;
+}
+
+.result-big{
+font-size:52px;
+font-weight:bold;
+margin-bottom:15px;
+}
+
+.normal{
+color:#22c55e;
+}
+
+.pneumonia{
+color:#ff6b6b;
+}
+
+.confidence{
+font-size:24px;
+margin-bottom:18px;
+}
+
+.progress{
+height:18px;
+background:#1e293b;
+border-radius:30px;
+overflow:hidden;
+}
+
+.progress-fill{
+height:100%;
+background:
+linear-gradient(
+90deg,
+#14b8ff,
+#00ffd5
+);
+border-radius:30px;
+}
+/* ======================
+SMALL PATIENT INFO
+====================== */
+
+.side-card h2{
+font-size:30px;
+margin-bottom:20px;
+}
+
+.patient-grid{
+display:grid;
+grid-template-columns:1fr;
+gap:14px;
+}
+
+.info-box{
+background:#10253c;
+padding:18px;
+border-radius:20px;
+}
+
+.info-box h4{
+font-size:15px;
+margin-bottom:8px;
+color:#94a3b8;
+}
+
+.info-box p{
+font-size:22px;
+font-weight:bold;
+}
+
+/* ======================
+MODEL PERFORMANCE
+====================== */
+
+.performance-card{
+margin-top:22px;
+}
+
+.metric{
+background:#10253c;
+padding:18px;
+border-radius:18px;
+margin-bottom:12px;
+}
+
+.metric h4{
+font-size:15px;
+margin-bottom:8px;
+color:#94a3b8;
+}
+
+.metric p{
+font-size:26px;
+font-weight:bold;
+color:#14b8ff;
+}
+
+/* ======================
+ACCORDION
+====================== */
+
+.accordion{
+margin-top:25px;
+}
+
+.accordion-btn{
+width:100%;
+border:none;
+cursor:pointer;
+padding:22px;
+border-radius:24px;
+font-size:24px;
+font-weight:bold;
+color:white;
+background:#0b1b2c;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.accordion-content{
+display:none;
+margin-top:15px;
+background:#10253c;
+padding:30px;
+border-radius:25px;
+font-size:18px;
+line-height:2;
+color:#dbe7f2;
+}
+
+/* ======================
+VOICE BUTTONS
+====================== */
+
+.voice-controls{
+display:flex;
+gap:15px;
+margin-top:20px;
+flex-wrap:wrap;
+}
+
+.voice-play{
+background:
+linear-gradient(
+90deg,
+#8b5cf6,
+#6d28d9
+);
+}
+
+.voice-stop{
+background:
+linear-gradient(
+90deg,
+#ef4444,
+#dc2626
+);
+}
+
+/* ======================
+FOOTER
+====================== */
+
+.footer{
+margin-top:25px;
+background:#081827;
+padding:22px;
+border-radius:25px;
+display:flex;
+justify-content:space-between;
+flex-wrap:wrap;
+gap:15px;
+font-size:18px;
+color:#dce7f2;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1200px){
+
+.main-grid{
+grid-template-columns:1fr;
+}
+
+.image-grid{
+grid-template-columns:1fr;
+}
+
+.image-preview{
+height:420px;
+}
+
+.logo-title h1{
+font-size:38px;
+}
+
+.result-big{
+font-size:38px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<div class="header">
+
+<div class="logo-title">
+
+<i class="fa-solid fa-hospital"></i>
+
+<h1>
+AI Medical Hospital Report
+</h1>
+
+</div>
+
+<div class="header-buttons">
+
+<button
+class="btn dashboard-btn"
+onclick="window.location.href='index.html'">
+
+<i class="fa-solid fa-arrow-left"></i>
+Dashboard
+
+</button>
+
+<button
+class="btn download-btn"
+onclick="downloadHospitalPDF()">
+    <i class="fa-solid fa-file-pdf"></i>
+    Download PDF
+</button>
+
+</div>
+
+</div>
+
+<!-- MAIN GRID -->
+
+<div class="main-grid">
+
+<!-- LEFT BIG XRAY AREA -->
+
+<div class="card">
+
+<div class="image-grid">
+
+<div class="image-card">
+
+<h2>
+Chest X-Ray
+</h2>
+
+<div class="image-preview">
+
+<img
+id="xrayImage"
+src="{{ image_path }}"
+alt="Chest X-Ray">
+
+</div>
+
+</div>
+
+<div class="image-card">
+
+    <h2>Grad-CAM Heatmap</h2>
+
+    <div class="image-preview">
+        <img
+            id="gradcamImage"
+            src="{{ gradcam_path }}"
+            alt="GradCAM">
+    </div>
+
+</div>
+
+</div>
+
+<div class="result-card">
+
+<div class="result-small">
+AI Diagnosis Result
+</div>
+
+<div class="result-big
+{% if prediction == 'NORMAL' %}
+normal
+{% else %}
+pneumonia
+{% endif %}
+">
+
+{{ prediction }}
+
+</div>
+<div class="confidence">
+
+Confidence Score:
+<b>{{ confidence }}%</b>
+
+</div>
+
+<div style="
+margin-top:15px;
+font-size:24px;
+font-weight:bold;
+">
+
+Pneumonia Severity:
+
+{% if severity == "High" %}
+
+<span style="color:#ff3b30;">
+🔴 High
+</span>
+
+{% elif severity == "Medium" %}
+
+<span style="color:#ff9500;">
+🟠 Medium
+</span>
+
+{% elif severity == "Low" %}
+
+<span style="color:#ffd60a;">
+🟡 Low
+</span>
+
+{% else %}
+
+<span style="color:#22c55e;">
+🟢 Normal
+</span>
+
+{% endif %}
+<br><br>
+
+<div style="
+margin-top:10px;
+font-size:20px;
+font-weight:bold;
+color:#14b8ff;
+">
+
+🫁 Affected Region:
+{{ affected_region }}
+
+</div>
+
+<div style="
+margin-top:8px;
+font-size:20px;
+font-weight:bold;
+color:#ff6b6b;
+">
+
+📊 Estimated Infection:
+{{ infection_percentage }}%
+
+</div>
+</div>
+
+<div class="progress">
+
+<div class="progress-fill" style="width: {{ confidence }}%;">
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- RIGHT SMALL PANEL -->
+
+<div class="card side-card">
+
+<h2>
+Patient Information
+</h2>
+
+<div class="patient-grid">
+
+<div class="info-box">
+<h4>Name</h4>
+<p>{{ name }}</p>
+</div>
+
+<div class="info-box">
+<h4>Age</h4>
+<p>{{ age }}</p>
+</div>
+
+<div class="info-box">
+<h4>Gender</h4>
+<p>{{ gender }}</p>
+</div>
+
+<div class="info-box">
+<h4>Prediction</h4>
+
+<p class="
+{% if prediction == 'NORMAL' %}
+normal
+{% else %}
+pneumonia
+{% endif %}
+">
+
+{{ prediction }}
+
+</p>
+
+</div>
+
+</div>
+<!-- MODEL PERFORMANCE -->
+
+<div class="performance-card">
+
+<h2>
+<i class="fa-solid fa-chart-line"></i>
+Model Performance
+</h2>
+
+<div class="metric">
+<h4>Accuracy</h4>
+<p>98.32%</p>
+</div>
+
+<div class="metric">
+<h4>Precision</h4>
+<p>97.11%</p>
+</div>
+
+<div class="metric">
+<h4>Recall</h4>
+<p>97.87%</p>
+</div>
+
+<div class="metric">
+<h4>F1 Score</h4>
+<p>96.02%</p>
+</div>
+
+<div class="metric">
+<h4>Confidence</h4>
+<p>{{ confidence }}%</p>
+</div>
+<div class="info-box">
+    <h3>🛡️ AI Robustness Score</h3>
+    <p>{{ robustness_score }}%</p>
+</div>
+</div>
+
+</div>
+
+</div>
+
+<!-- ======================
+EXPLAIN DIAGNOSIS
+(CLOSED / OPEN)
+====================== -->
+
+<div class="accordion">
+
+<button
+class="accordion-btn"
+onclick="toggleAccordion('xaiBox')">
+
+<span>
+<i class="fa-solid fa-brain"></i>
+ Explain Diagnosis (XAI)
+</span>
+
+<i class="fa-solid fa-chevron-down"></i>
+
+</button>
+
+<div
+id="xaiBox"
+class="accordion-content">
+
+{% if prediction == 'NORMAL' %}
+
+<h2 style="margin-bottom:20px;">
+Normal Chest X-Ray Analysis
+</h2>
+
+<b>Step 1: Initial Chest Evaluation</b><br>
+The uploaded chest X-ray image was analyzed using the AI-powered pneumonia detection system. The model examined pulmonary symmetry, grayscale lung density, thoracic structure, opacity concentration, and radiographic consistency to identify abnormalities.
+
+<br><br>
+
+<b>Step 2: Lung Region Examination</b><br>
+The system did not identify significant white infiltrative patches, suspicious opacity concentration, abnormal chest density accumulation, or pulmonary irregularities commonly associated with pneumonia infection.
+
+<br><br>
+
+<b>Step 3: Explainable AI (Grad-CAM) Analysis</b><br>
+The Grad-CAM heatmap focused mainly on structurally healthy pulmonary regions and did not highlight strong abnormal activation zones, suggesting minimal evidence of infection-related abnormality.
+
+<br><br>
+
+<b>Step 4: Medical Interpretation</b><br>
+Pulmonary regions appear relatively balanced and radiologically stable. The system observed comparatively healthy chest characteristics without strong pneumonia indicators.
+
+<br><br>
+
+<b>Final Conclusion</b><br>
+The uploaded chest X-ray is classified as <b>NORMAL</b>. The model found low evidence of pneumonia-related abnormality. Final interpretation by a qualified radiologist or healthcare professional remains recommended.
+
+{% else %}
+
+<h2 style="margin-bottom:20px;">
+Pneumonia Chest X-Ray Analysis
+</h2>
+
+<b>Step 1: Initial Chest Evaluation</b><br>
+The uploaded chest X-ray image was processed through the AI pneumonia detection system trained to recognize pulmonary infection-related radiographic patterns.
+
+<br><br>
+
+<b>Step 2: Suspicious Feature Detection</b><br>
+The model identified suspicious opacity concentration, infiltrative lung texture, pulmonary density irregularity, abnormal brightness distribution, and infection-associated chest abnormalities.
+
+<br><br>
+
+<b>Step 3: Explainable AI (Grad-CAM) Analysis</b><br>
+The Grad-CAM heatmap highlighted pulmonary regions that strongly influenced prediction confidence, indicating suspicious areas potentially linked with inflammation or infection.
+
+<br><br>
+
+<b>Step 4: Medical Interpretation</b><br>
+The system identified chest characteristics commonly associated with pulmonary infection, opacity accumulation, infiltrative patterns, and pneumonia-related abnormalities.
+
+<br><br>
+
+<b>Final Conclusion</b><br>
+The uploaded chest X-ray is classified as <b>PNEUMONIA</b>. Medical consultation and radiologist confirmation are strongly recommended for diagnosis verification and treatment planning.
+
+{% endif %}
+
+</div>
+
+</div>
+<!-- ======================
+VOICE EXPLANATION
+(CLOSED / OPEN)
+====================== -->
+
+<div class="accordion">
+
+<button
+class="accordion-btn"
+onclick="toggleAccordion('voiceBox')">
+
+<span>
+<i class="fa-solid fa-volume-high"></i>
+ Professional Voice Explanation
+</span>
+
+<i class="fa-solid fa-chevron-down"></i>
+
+</button>
+
+<div
+id="voiceBox"
+class="accordion-content">
+
+<h2 style="margin-bottom:20px;">
+AI Voice Medical Explanation
+</h2>
+
+<div
+id="voiceText"
+style="
+line-height:2;
+font-size:18px;
+color:#dbe7f2;
+">
+
+{% if prediction == 'NORMAL' %}
+
+The uploaded chest X-ray image has been analyzed using the artificial intelligence powered pneumonia detection system.
+
+Based on radiological examination, pulmonary texture evaluation, chest symmetry assessment, grayscale density analysis, and explainable deep-learning interpretation, the uploaded chest X-ray is predicted as normal.
+
+The AI system did not identify strong abnormal opacity, pulmonary infiltrates, suspicious inflammatory concentration, irregular chest density, or radiographic abnormalities commonly associated with pneumonia infection.
+
+The Grad-CAM explainability heatmap focused mainly on structurally healthy pulmonary regions and demonstrated minimal suspicious activation, which indicates lower evidence of infection-related abnormality.
+
+From an explainable artificial intelligence perspective, the system evaluated pulmonary symmetry, tissue consistency, chest density, grayscale distribution, thoracic structure, and infection-related radiographic indicators before generating prediction confidence.
+
+Although the uploaded chest X-ray is predicted as normal, medical consultation and radiologist review remain important, particularly when symptoms such as cough, fever, chest discomfort, breathing difficulty, or fatigue are present.
+
+{% else %}
+
+The uploaded chest X-ray image has been analyzed using the explainable artificial intelligence powered pneumonia detection system.
+
+Based on pulmonary density evaluation, radiographic opacity analysis, Grad-CAM explainability assessment, grayscale chest abnormality mapping, and deep-learning interpretation, the uploaded image is predicted as pneumonia.
+
+The AI model identified suspicious opacity concentration, pulmonary infiltrative texture, abnormal lung density distribution, infection-associated chest abnormalities, and radiological features frequently linked with pneumonia-related pulmonary disease.
+
+The Grad-CAM explainability heatmap highlighted suspicious pulmonary regions that strongly influenced prediction confidence and may indicate inflammation, infection-related opacity, or abnormal pulmonary concentration.
+
+From an explainable artificial intelligence perspective, the model evaluated pulmonary symmetry, grayscale intensity, thoracic structure, infection-associated imaging markers, and abnormal chest opacity before generating prediction confidence.
+
+Because pneumonia may significantly affect respiratory function and patient health, consultation with a healthcare professional or radiologist is strongly recommended for medical confirmation, symptom evaluation, and treatment planning.
+
+{% endif %}
+
+</div>
+
+<!-- PLAY / STOP -->
+
+<div class="voice-controls">
+
+<button
+class="btn voice-play"
+onclick="playVoice()">
+
+<i class="fa-solid fa-play"></i>
+ Play Voice
+
+</button>
+
+<button
+class="btn voice-stop"
+onclick="stopVoice()">
+
+<i class="fa-solid fa-stop"></i>
+ Stop Voice
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- FOOTER -->
+
+<div class="footer">
+
+<div>
+🟢 System Status:
+<b>AI Diagnosis Active</b>
+</div>
+
+<div>
+📌 Prediction:
+<b>{{ prediction }}</b>
+</div>
+
+<div>
+🎯 Confidence:
+<b>{{ confidence }}%</b>
+</div>
+
+</div>
+
+<script>
+
+/* ==========================
+OPEN / CLOSE ACCORDION
+========================== */
+
+function toggleAccordion(id){
+
+const box =
+document.getElementById(id);
+
+if(box.style.display === "block"){
+
+box.style.display = "none";
+
+}else{
+
+box.style.display = "block";
+
+}
+
+}
+
+/* ==========================
+VOICE PLAY / STOP
+========================== */
+
+let speech = null;
+
+function playVoice(){
+
+stopVoice();
+
+const text =
+document
+.getElementById(
+"voiceText"
+).innerText;
+
+speech =
+new SpeechSynthesisUtterance(
+text
+);
+
+speech.rate = 0.9;
+speech.pitch = 1;
+speech.volume = 1;
+speech.lang = "en-US";
+
+window.speechSynthesis
+.speak(speech);
+
+}
+
+function stopVoice(){
+
+window.speechSynthesis
+.cancel();
+
+}
+
+window.addEventListener(
+"beforeunload",
+()=>{
+window.speechSynthesis.cancel();
+});
+
+/* ==========================
+WAIT FOR IMAGE LOAD
+========================== */
+
+function imageLoaded(img){
+
+return new Promise(
+(resolve)=>{
+
+if(img.complete){
+
+resolve();
+
+}else{
+
+img.onload =
+resolve;
+
+}
+
+});
+
+}
+
+/* ==========================
+DOWNLOAD HOSPITAL PDF
+========================== */
+
+async function downloadHospitalPDF(){
+
+const {
+jsPDF
+} = window.jspdf;
+
+const doc =
+new jsPDF();
+
+const now =
+new Date();
+
+const xray =
+document.getElementById(
+"xrayImage"
+);
+
+const gradcam =
+document.getElementById(
+"gradcamImage"
+);
+
+await imageLoaded(xray);
+await imageLoaded(gradcam);
+/* HEADER */
+
+doc.setFillColor(
+14,165,255
+);
+
+doc.rect(
+0,
+0,
+220,
+28,
+"F"
+);
+
+doc.setTextColor(
+255,
+255,
+255
+);
+
+doc.setFontSize(22);
+
+doc.text(
+"AI Medical Hospital",
+20,
+18
+);
+
+doc.setFontSize(11);
+
+doc.text(
+"Pneumonia Diagnosis Report",
+20,
+24
+);
+
+/* DATE TIME */
+
+doc.setTextColor(
+0,
+0,
+0
+);
+
+doc.setFontSize(11);
+
+doc.text(
+"Date: " +
+now.toLocaleDateString(),
+145,
+16
+);
+
+doc.text(
+"Time: " +
+now.toLocaleTimeString(),
+145,
+22
+);
+
+/* PATIENT DETAILS */
+
+doc.setFontSize(16);
+
+doc.text(
+"Patient Information",
+20,
+42
+);
+
+doc.line(
+20,
+45,
+80,
+45
+);
+
+doc.setFontSize(12);
+
+doc.text(
+"Name: {{ name }}",
+20,
+55
+);
+
+doc.text(
+"Age: {{ age }}",
+20,
+63
+);
+
+doc.text(
+"Gender: {{ gender }}",
+20,
+71
+);
+
+/* RESULT */
+
+doc.setFontSize(16);
+
+doc.text(
+"Diagnosis Result",
+110,
+42
+);
+
+doc.line(
+110,
+45,
+170,
+45
+);
+
+doc.setFontSize(12);
+
+doc.text(
+"Prediction: {{ prediction }}",
+110,
+55
+);
+
+doc.text(
+"Confidence: {{ confidence }}%",
+110,
+63
+);
+doc.text(
+"Severity: {{ severity }}",
+110,
+71
+);
+
+doc.text(
+"Affected Region: {{ affected_region }}",
+110,
+79
+);
+
+doc.text(
+"Infection: {{ infection_percentage }}%",
+110,
+87
+);
+/* RECOMMENDATION */
+
+doc.setFontSize(16);
+
+doc.text(
+"Medical Recommendation",
+20,
+92
+);
+
+doc.line(
+20,
+95,
+90,
+95
+);
+
+doc.setFontSize(12);
+
+const recommendationText = "{{ 'Chest X-ray appears normal. No strong pneumonia indicators detected. Clinical consultation is advised if symptoms continue.' if prediction == 'NORMAL' else 'Possible pneumonia related abnormality detected. Consultation with a radiologist or healthcare professional is strongly recommended.' }}";
+
+doc.text(
+recommendationText,
+20,
+105,
+{
+maxWidth:170
+}
+);
+
+/* XRAY IMAGE */
+
+doc.setFontSize(15);
+
+doc.text(
+"Chest X-Ray",
+20,
+140
+);
+
+try{
+
+doc.addImage(
+xray.src,
+"PNG",
+20,
+145,
+75,
+75
+);
+
+}catch(err){
+console.log(err);
+}
+
+/* HEATMAP */
+
+doc.text(
+"Grad-CAM Heatmap",
+110,
+140
+);
+
+try{
+
+doc.addImage(
+gradcam.src,
+"PNG",
+110,
+145,
+75,
+75
+);
+
+}catch(err){
+console.log(err);
+}
+
+/* Signature */
+
+doc.line(
+120,
+240,
+185,
+240
+);
+
+doc.text(
+"Dr. AI Medical Specialist",
+128,
+248
+);
+
+/* FOOTER */
+
+doc.setFontSize(10);
+
+doc.text(
+"Generated Automatically By AI Pneumonia Detection System",
+20,
+275
+);
+
+doc.save(
+"AI_Medical_Report.pdf"
+);
+
+}
+
+</script>
+
+</body>
+</html>
