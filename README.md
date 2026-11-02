@@ -1,1049 +1,410 @@
-Explainable AI for Pneumonia Detection Using Chest X-Ray Images
+🫁 Explainable AI for Pneumonia Detection
 
-Project Overview
+Deep Learning • Computer Vision • Ensemble Learning • Explainable AI
 
-Explainable AI for Pneumonia Detection Using Chest X-Ray Images is an AI-powered medical image analysis system developed to detect pneumonia from chest X-ray images while also providing an explanation of the model's prediction.
+<p align="center">
+  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=600&size=22&duration=3000&pause=900&color=00E5FF&center=true&vCenter=true&width=850&lines=AI-Powered+Pneumonia+Detection;Explainable+Deep+Learning;Grad-CAM+Visual+Interpretability;Computer+Vision+for+Medical+Imaging" alt="Animated project tagline" />
+</p><p align="center">
+  <img src="https://img.shields.io/badge/Domain-Medical%20AI-00E5FF?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Deep%20Learning-CNN%20Ensemble-8A2BE2?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Explainability-Grad--CAM-00C853?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Framework-Flask-orange?style=for-the-badge&logo=flask&logoColor=white" />
+</p><p align="center">
+  <b>Making medical image classification more interpretable through Explainable AI.</b>
+</p>---
 
-The project combines Deep Learning, Computer Vision, Lung Segmentation, Ensemble Learning, and Explainable Artificial Intelligence (XAI) into a Flask-based web application.
+🌌 Project Overview
 
-Unlike a traditional classification system that only provides a result such as "Pneumonia" or "Normal", this system uses Grad-CAM to generate a visual heatmap highlighting the regions of the chest X-ray that contributed to the model's prediction.
+Explainable AI for Pneumonia Detection Using Chest X-Ray Images is an AI-powered medical image analysis system designed to classify chest X-ray images into two categories:
 
-The system also includes patient management, prediction history, dashboard analytics, PDF report generation, webcam capture, image quality validation, and an AI Challenge Mode for evaluating prediction robustness.
+- 🟢 NORMAL
+- 🔴 PNEUMONIA
 
+The project combines Deep Learning, Computer Vision, Lung Segmentation, Ensemble Learning, and Explainable AI (XAI) in a Flask-based web application.
 
+Rather than presenting only a model prediction, the system is designed to provide visual explanations using Grad-CAM heatmaps, helping users understand which image regions influenced the model's output.
 
----
+It also incorporates patient management, prediction history, dashboard analytics, PDF report generation, image quality validation, webcam capture, and an AI Challenge Mode for testing prediction consistency under image transformations.
 
-Problem Statement
+🎯 Key Objectives
 
-Pneumonia is a respiratory infection that can affect one or both lungs. Chest X-ray imaging is commonly used as part of the assessment of pneumonia.
-
-Manual examination of X-ray images requires trained medical professionals and can be time-consuming. Deep learning models can assist in analysing medical images, but many deep-learning systems operate as black boxes.
-
-A classification model may produce:
-
-Prediction: PNEUMONIA
-Confidence: 96%
-
-However, the user may still ask:
-
-> Why did the model predict pneumonia?
-
-
-
-This project addresses this problem by combining pneumonia classification with Explainable AI.
-
-The system attempts to provide:
-
-Pneumonia/Normal prediction
-
-Confidence score
-
-Lung segmentation
-
-Visual explanation using Grad-CAM
-
-Robustness evaluation
-
-Patient history
-
-Automated PDF reports
-
-
+- Develop a deep-learning system for pneumonia classification.
+- Segment lung regions using a U-Net model.
+- Integrate multiple CNN architectures.
+- Apply ensemble learning to combine model predictions.
+- Generate Grad-CAM visual explanations.
+- Highlight important regions in chest X-ray images.
+- Display prediction confidence scores.
+- Evaluate model robustness under image transformations.
+- Build an interactive Flask-based application.
+- Maintain patient records and prediction history.
+- Generate downloadable PDF reports.
 
 ---
 
-Project Objectives
+🧠 System Architecture
 
-The major objectives of the project are:
+The project follows a multi-stage medical image analysis pipeline.
 
-1. Develop an AI-based pneumonia detection system using chest X-ray images.
-
-
-2. Apply lung segmentation before classification.
-
-
-3. Use multiple deep-learning models for prediction.
-
-
-4. Combine predictions using ensemble learning.
-
-
-5. Implement Explainable AI using Grad-CAM.
-
-
-6. Highlight important regions of the X-ray image.
-
-
-7. Provide prediction confidence.
-
-
-8. Evaluate prediction robustness using AI Challenge Mode.
-
-
-9. Develop a Flask-based web application.
-
-
-10. Maintain patient and prediction history.
-
-
-11. Generate professional PDF reports.
-
-
-12. Provide dashboard-based analytics.
-
-
-13. Create a user-friendly interface for X-ray analysis.
-
-
-
-
----
-
-Core Concept
-
-The complete AI pipeline is:
-
-Chest X-Ray
-     ↓
-Image Quality Validation
-     ↓
-Image Preprocessing
-     ↓
-Lung Segmentation
-     ↓
-Segmented Lung Image
-     ↓
-Multiple CNN Models
-     ↓
-Ensemble Prediction
-     ↓
-Normal / Pneumonia
-     ↓
-Confidence Calculation
-     ↓
-Grad-CAM Explainability
-     ↓
-Robustness Testing
-     ↓
-Result + Report
-
+              ┌──────────────────────┐
+              │  Chest X-Ray Upload  │
+              └──────────┬───────────┘
+                         │
+              ┌──────────▼───────────┐
+              │ Image Quality Check  │
+              └──────────┬───────────┘
+                         │
+              ┌──────────▼───────────┐
+              │   Preprocessing      │
+              │ Resize & Normalize   │
+              └──────────┬───────────┘
+                         │
+              ┌──────────▼───────────┐
+              │  U-Net Segmentation  │
+              │    Lung Extraction   │
+              └──────────┬───────────┘
+                         │
+              ┌──────────▼───────────┐
+              │  CNN Model Ensemble  │
+              └──────────┬───────────┘
+                         │
+        ┌────────────────┼────────────────┐
+        │                │                │
+   DenseNet121      DenseNet201       Xception
+        │                │                │
+   EfficientNetB3    MobileNetV2          │
+        └────────────────┼────────────────┘
+                         │
+              ┌──────────▼───────────┐
+              │ Ensemble Prediction  │
+              └──────────┬───────────┘
+                         │
+              ┌──────────▼───────────┐
+              │ NORMAL / PNEUMONIA   │
+              └──────────┬───────────┘
+                         │
+              ┌──────────▼───────────┐
+              │ Grad-CAM Explanation │
+              └──────────┬───────────┘
+                         │
+              ┌──────────▼───────────┐
+              │ Results & PDF Report │
+              └──────────────────────┘
 
 ---
 
-Key Features
+⚙️ Core AI Components
 
-1. Pneumonia Detection
+1. 🫁 Pneumonia Classification
 
-The system classifies chest X-ray images into:
+The classification task uses five configured convolutional neural network architectures:
 
-NORMAL
+Model| Architecture
+DenseNet121| Dense Convolutional Network
+DenseNet201| Deep Dense Convolutional Network
+Xception| Depthwise Separable Convolutions
+EfficientNetB3| Efficient Convolutional Network
+MobileNetV2| Lightweight CNN Architecture
 
-PNEUMONIA
+The models classify chest X-ray images into NORMAL or PNEUMONIA categories.
 
+2. 🧩 Lung Segmentation — U-Net
 
-The classification is performed using multiple deep-learning models.
+A U-Net-based segmentation model is used to identify lung regions in chest X-ray images.
 
+Model file: "lung_segmentation_unet.h5"
 
----
+Key responsibilities:
 
-2. Lung Segmentation
+- Generate lung segmentation masks.
+- Identify relevant lung regions.
+- Reduce the influence of surrounding image areas.
+- Support lung-focused visual explanations.
 
-A U-Net-based segmentation model is used to identify the lung region.
+3. 🔬 Ensemble Learning
 
-The purpose is to reduce the influence of irrelevant areas surrounding the lungs.
+The system combines predictions from five configured CNN models using average probability aggregation.
 
-Original X-Ray
-      ↓
-U-Net
-      ↓
-Lung Mask
-      ↓
-Lung Region
-      ↓
-Classification
+Ensemble formula:
 
-The segmentation model is represented by:
+[
+P_{\text{ensemble}} =
+\frac{P_1+P_2+P_3+P_4+P_5}{5}
+]
 
-lung_segmentation_unet.h5
+Where each (P_i) represents the pneumonia score from one model.
 
+Classification threshold: 0.5
 
----
+- Score ≥ 0.5 → PNEUMONIA
+- Score < 0.5 → NORMAL
 
- Deep Learning Models
+4. 🔥 Explainable AI — Grad-CAM
 
-The classification pipeline uses an ensemble of multiple deep-learning architectures.
+Grad-CAM (Gradient-weighted Class Activation Mapping) is used to visualize image regions that contribute to a model's prediction.
 
-The configured models include:
+Explainability workflow:
 
-DenseNet121
+1. Generate a model prediction.
+2. Calculate gradients with respect to a target convolutional layer.
+3. Produce a class activation heatmap.
+4. Overlay the heatmap on the original X-ray.
+5. Apply a lung segmentation mask for lung-restricted visualization.
 
-DenseNet121 uses dense connections between layers, allowing features from earlier layers to be reused by later layers.
+This helps make model outputs more interpretable, although heatmaps do not establish clinical reasoning or prove that a model is focusing on medically valid features.
 
-DenseNet201
+5. 🧪 AI Challenge Mode
 
-DenseNet201 is a deeper DenseNet architecture capable of learning complex visual representations.
+The AI Challenge Mode is designed to evaluate prediction consistency under controlled image transformations.
 
-Xception
+Supported transformations include:
 
-Xception uses depthwise separable convolutions to improve computational efficiency while maintaining strong feature extraction capabilities.
+- Brightness increase and decrease.
+- Contrast adjustment.
+- Small image rotations.
+- Gaussian blur.
+- Noise addition.
 
-EfficientNetB3
+Robustness score:
 
-EfficientNetB3 provides a balance between model complexity and performance through compound scaling.
+[
+R = \frac{\text{Consistent Predictions}}
+{\text{Total Challenge Images}} \times 100
+]
 
-MobileNetV2
-
-MobileNetV2 is a lightweight architecture designed for efficient computation.
-
-
----
-
- Ensemble Learning
-
-Instead of relying on only one model, the system combines predictions from five classification models.
-
-Conceptually:
-
-DenseNet121
-      ↓
-DenseNet201
-      ↓
-Xception
-      ↓
-EfficientNetB3
-      ↓
-MobileNetV2
-      ↓
-Average Predictions
-      ↓
-Final Prediction
-
-The configured ensemble score is calculated as:
-
-Final Score =
-(P1 + P2 + P3 + P4 + P5) / 5
-
-where:
-
-P1 = DenseNet121 prediction
-P2 = DenseNet201 prediction
-P3 = Xception prediction
-P4 = EfficientNetB3 prediction
-P5 = MobileNetV2 prediction
-
-A configured threshold of:
-
-0.5
-
-is used for binary classification.
-
-Conceptually:
-
-Score >= 0.5
-      ↓
-PNEUMONIA
-
-Score < 0.5
-      ↓
-NORMAL
-
+This is an application-defined consistency measure, not a substitute for formal clinical validation or comprehensive robustness evaluation.
 
 ---
 
- Explainable AI — Grad-CAM
+📊 Dataset Information
 
-One of the most important components of the project is Explainable Artificial Intelligence.
+Chest X-Ray Dataset
 
-What is Grad-CAM?
+The project documentation describes the following dataset distribution:
 
-Grad-CAM (Gradient-weighted Class Activation Mapping) is an explainability technique commonly used with convolutional neural networks.
+Category| Images
+NORMAL| 1,341
+PNEUMONIA| 3,875
+Total| 5,216
 
-It produces a heatmap showing which regions of an image contributed strongly to a particular prediction.
-
-Instead of showing only:
-
-PNEUMONIA
-96%
-
-the system can also display a heatmap:
-
-Original X-Ray
-       +
-Grad-CAM Heatmap
-       ↓
-Highlighted Important Regions
-
-This provides a visual explanation of the model's decision.
-
-
----
-
-Grad-CAM Workflow
-
-Input X-Ray
-     ↓
-CNN Model
-     ↓
-Feature Maps
-     ↓
-Target Class
-     ↓
-Gradient Calculation
-     ↓
-Important Feature Weights
-     ↓
-Grad-CAM
-     ↓
-Heatmap
-     ↓
-Overlay on X-Ray
-
-The generated heatmap is superimposed on the X-ray to make the important regions visually understandable.
-
-
----
-
-Lung-Restricted Grad-CAM
-
-The project combines:
-
-Lung Segmentation + Grad-CAM
-
-The lung segmentation mask can be used to restrict the explainability visualization to the lung region.
-
-This creates the following pipeline:
-
-X-Ray
-  ↓
-U-Net
-  ↓
-Lung Mask
-  ↓
-CNN
-  ↓
-Grad-CAM
-  ↓
-Apply Lung Mask
-  ↓
-Final Explainable Heatmap
-
-This helps focus the visualization on the relevant anatomical region.
-
-
----
-
-Confidence Score
-
-The system calculates a confidence percentage based on the ensemble prediction.
-
-For a pneumonia prediction:
-
-Confidence = Prediction × 100
-
-For a normal prediction:
-
-Confidence = (1 - Prediction) × 100
-
-For example:
-
-Prediction = 0.93
-
-Confidence = 0.93 × 100
-           = 93%
-
-The result can therefore be displayed as:
-
-Prediction: PNEUMONIA
-Confidence: 93%
-
-> Confidence should not be interpreted as a clinically validated probability unless the model has undergone proper probability calibration and external validation.
-
-
-
-
----
-
-Severity Classification
-
-The application also provides a confidence-based severity category.
-
-The configured logic is:
-
-Confidence >= 90%
-        ↓
-HIGH
-
-Confidence >= 70%
-        ↓
-MEDIUM
-
-Confidence < 70%
-        ↓
-LOW
-
-Important:
-
-This is an application-defined confidence category, not a clinical measurement of pneumonia severity.
-
-
----
-
-AI Challenge Mode
-
-The project includes an AI Challenge Mode to evaluate prediction consistency.
-
-The purpose is to determine whether a small change in the input image causes the model to produce a completely different prediction.
-
-The system creates controlled variations of the original image.
-
-Examples include:
-
-Brightness increase
-
-Brightness decrease
-
-Contrast adjustment
-
-Small rotation
-
-Blur
-
-Noise
-
-
-
----
-
-Robustness Score
-
-Each modified image is passed through the prediction pipeline.
-
-If the prediction remains the same as the original image, it is considered consistent.
-
-The robustness score can be calculated as:
-
-Robustness Score =
-Consistent Predictions
----------------------- × 100
-Total Challenge Images
-
-For example:
-
-Original Prediction = PNEUMONIA
-
-10 challenge images
-9 produce PNEUMONIA
-
-Robustness Score = 9/10 × 100
-                 = 90%
-
-This provides an additional experimental measure of model stability.
-
-
----
-
-Dataset
-
-Kaggle Chest X-Ray Dataset
-
-The project uses a chest X-ray dataset for pneumonia classification.
-
-The referenced dataset contains two major classes:
-
-NORMAL
-PNEUMONIA
-
-The dataset counts used in the project documentation are:
-
-Class	Images
-
-Normal	1,341
-Pneumonia	3,875
-Total	5,216
-
-
-The exact counts should be verified against the specific dataset version used for the final experiments.
-
-
----
+Lung Segmentation Dataset
 
 Shenzhen Lung Segmentation Dataset
 
-A lung segmentation dataset is also used for lung-region segmentation.
+Used for lung image segmentation and mask-based processing.
 
-The segmentation data provides:
-
-Chest X-ray images
-
-Lung masks
-
-Annotation information
-
-
-These masks support the training or evaluation of the U-Net segmentation component.
-
+Dataset counts and preprocessing details should be checked against the exact dataset versions used in the experiments.
 
 ---
 
-Image Preprocessing
+🖥️ Flask Web Application
 
-Before an X-ray is passed to the classification models, it undergoes preprocessing.
+The project brings the AI pipeline into an interactive web application.
 
-Typical steps include:
+Application Modules
 
-1. Image loading
-
-
-2. Format conversion
-
-
-3. Resizing
-
-
-4. Pixel normalization
-
-
-5. Lung segmentation
-
-
-6. Lung mask application
-
-
-7. Model input preparation
-
-
-
-The configured classification input size is:
-
-224 × 224 pixels
-
+Module| Functionality
+Authentication| User registration and login
+AI Dashboard| Main application dashboard
+X-Ray Upload| Upload chest X-ray images
+Webcam Capture| Capture images through a webcam
+Image Validation| Check image quality
+Prediction| Run pneumonia classification
+Explainability| Display Grad-CAM visualizations
+Patient Management| Maintain patient information
+Prediction History| Review previous predictions
+PDF Reports| Generate prediction reports
+Dashboard Analytics| Display application statistics
+AI Chatbot| Interactive assistance
+Pneumonia Awareness| Educational information
+Feedback| Collect user feedback
+Settings| Manage application preferences
 
 ---
 
-System Architecture
+📈 Evaluation & Performance Analysis
 
-The overall architecture is:
+The project evaluation framework includes:
 
-USER
-                      │
-                      ▼
-             ┌─────────────────┐
-             │ Flask Web App   │
-             └────────┬────────┘
-                      │
-                      ▼
-             ┌─────────────────┐
-             │ Upload / Webcam │
-             └────────┬────────┘
-                      │
-                      ▼
-             ┌─────────────────┐
-             │ Image Validation│
-             └────────┬────────┘
-                      │
-                      ▼
-             ┌─────────────────┐
-             │ Preprocessing   │
-             └────────┬────────┘
-                      │
-                      ▼
-             ┌─────────────────┐
-             │ U-Net Segmentation│
-             └────────┬────────┘
-                      │
-                      ▼
-             ┌─────────────────┐
-             │ Segmented Lung  │
-             └────────┬────────┘
-                      │
-          ┌───────────┼───────────┐
-          ▼           ▼           ▼
-     DenseNet121  DenseNet201  Xception
-          │           │           │
-          └───────────┼───────────┘
-                      │
-             ┌────────┴────────┐
-             │ EfficientNetB3  │
-             │   MobileNetV2   │
-             └────────┬────────┘
-                      │
-                      ▼
-             ┌─────────────────┐
-             │ Ensemble Model  │
-             └────────┬────────┘
-                      │
-              ┌───────┴────────┐
-              ▼                ▼
-       Prediction         Grad-CAM
-              │                │
-              └───────┬────────┘
-                      ▼
-             ┌─────────────────┐
-             │ Result Dashboard│
-             └───────┬─────────┘
-                     │
-          ┌──────────┼──────────┐
-          ▼          ▼          ▼
-       History    PDF Report  Robustness
+Classification metrics
 
+- Accuracy
+- Precision
+- Recall
+- F1-score
+- Confusion Matrix
+- ROC Curve
+- AUC
+
+Explainability analysis
+
+- Grad-CAM heatmap visualization.
+- Lung-restricted Grad-CAM visualization.
+
+Robustness analysis
+
+- Prediction consistency under image transformations.
+- AI Challenge Mode results.
+
+Segmentation analysis
+
+- Lung mask visualization.
+- Segmentation quality assessment.
+
+Actual metric values should be added only after running experiments and validating the results.
 
 ---
 
-Web Application
+🛠️ Technology Stack
 
-The complete AI pipeline is integrated into a Flask web application.
-
-Main Modules
-
-Login Module
-
-Provides secure authentication for authorized users.
-
-Registration Module
-
-Allows users to create accounts.
-
-Welcome Page
-
-Introduces the system and its purpose.
-
-AI Dashboard
-
-Provides an overview of system activity.
-
-X-Ray Upload Module
-
-Allows users to upload chest X-ray images.
-
-Webcam Module
-
-Allows supported users to capture an image through a webcam.
-
-Prediction Module
-
-Runs the AI pipeline and generates the prediction.
-
-Result Module
-
-Displays:
-
-Prediction
-
-Confidence
-
-Severity
-
-Original X-ray
-
-Grad-CAM heatmap
-
-Robustness information
-
-
-Patient History
-
-Stores previous analyses and patient records.
-
-Medical News
-
-Displays configured medical news information.
-
-Weather Module
-
-Provides live weather information where configured.
-
-AI Chatbot
-
-Provides an AI-based assistance interface where configured.
-
-Pneumonia Awareness
-
-Provides educational information related to pneumonia.
-
-Feedback
-
-Allows users to submit system feedback.
-
-Settings
-
-Provides application configuration options.
-
-Logout
-
-Securely ends the current user session.
-
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=python,flask,html,css,js,sqlite,git,github" alt="Technology stack" />
+</p>Category| Technologies
+Programming Language| Python
+Deep Learning| TensorFlow, Keras
+Computer Vision| OpenCV
+AI Architectures| DenseNet, Xception, EfficientNet, MobileNetV2
+Segmentation| U-Net
+Explainable AI| Grad-CAM
+Backend| Flask
+Frontend| HTML, CSS, JavaScript, Bootstrap
+Database| SQLite
+Data Processing| NumPy, Pillow
+Visualization| Matplotlib
+Reporting| PDF generation tools
 
 ---
 
-Patient Management
-
-The system provides patient record management.
-
-Patient information can include:
-
-Patient ID
-Name
-Age
-Gender
-Contact Details
-Upload Date
-Prediction
-Confidence
-Severity
-Prediction History
-Generated Reports
-
-Administrative functionality can include:
-
-Add patient
-
-Search patient
-
-View patient
-
-Edit patient
-
-Delete patient
-
-View prediction history
-
-
-
----
-
-Dashboard Analytics
-
-The dashboard provides important system statistics.
-
-Possible dashboard indicators include:
-
-Total Patients
-Total Scans
-Pneumonia Detections
-Normal Detections
-Recent Uploads
-Model Usage
-System Status
-
-This provides administrators and authorized users with a centralized overview of the system.
-
-
----
-
-Professional PDF Report
-
-After prediction, the system can generate a professional PDF report.
-
-The report can contain:
-
-Patient Information
-
-Patient ID
-Name
-Age
-Gender
-Contact
-Date
-
-AI Analysis
-
-Prediction
-Confidence
-Severity
-Robustness Score
-
-Images
-
-Original Chest X-Ray
-Grad-CAM Heatmap
-
-The generated report provides a record of the AI-assisted analysis.
-
-
----
-
-Database
-
-The application uses SQLite for data storage.
-
-A patient history table can contain:
-
-id
-name
-age
-gender
-prediction
-confidence
-severity
-scan_date
-image
-
-Additional database tables can be used for:
-
-User accounts
-
-Patient records
-
-Prediction history
-
-Feedback
-
-Reports
-
-System settings
-
-
-
----
-
-Security Features
-
-The application can incorporate:
-
-User authentication
-
-Password hashing
-
-Role-based access
-
-Session management
-
-File type validation
-
-Restricted record management
-
-
-For production deployment, additional measures should be implemented, including:
-
-Strong secret management
-
-HTTPS
-
-CSRF protection
-
-Secure file storage
-
-Database access controls
-
-Audit logging
-
-Encryption
-
-Rate limiting
-
-
-
----
-
-Suggested Project Structure
-
-Explainable-AI-Pneumonia-Detection/
-│
-├── app.py
-├── requirements.txt
-│
-├── model.h5
-├── densenet201_model.h5
-├── xception_model.h5
-├── efficientnetb3_model.h5
-├── mobilenetv2_model.h5
-├── lung_segmentation_unet.h5
-│
-├── templates/
-│   ├── login.html
-│   ├── register.html
-│   ├── dashboard.html
-│   ├── upload.html
-│   ├── result.html
-│   ├── patient_history.html
-│   └── report.html
-│
-├── static/
-│   ├── css/
-│   ├── js/
-│   ├── images/
-│   ├── heatmaps/
-│   ├── reports/
-│   └── qrcodes/
-│
-├── uploads/
-│
-├── database/
-│   └── patients.db
-│
-└── README.md
-
-
----
-
-Installation
+🚀 Installation & Setup
 
 1. Clone the Repository
 
-git clone https://github.com/YOUR-USERNAME/Explainable-AI-Pneumonia-Detection.git
+git clone https://github.com/Xhkbasharat/explainable-xai-chest-xray.git
+cd explainable-xai-chest-xray
 
-cd Explainable-AI-Pneumonia-Detection
-
-
----
-
-2. Create Virtual Environment
-
-Windows
+2. Create a Virtual Environment
 
 python -m venv venv
 
+Activate it:
+
+# Windows
 venv\Scripts\activate
 
-Linux/macOS
-
-python3 -m venv venv
-
+# macOS / Linux
 source venv/bin/activate
-
-
----
 
 3. Install Dependencies
 
 pip install -r requirements.txt
 
-Typical dependencies include:
+4. Configure Model Files
 
-Flask
-TensorFlow
-Keras
-OpenCV
-NumPy
-Pillow
-Matplotlib
-SQLite
+Ensure the required trained model files are available in the locations expected by the application, including:
 
-Additional packages may be required depending on the final implementation.
+lung_segmentation_unet.h5
 
+The five classification model files must also be placed in their configured paths.
 
----
-
-Run the Application
-
-Run:
+5. Run the Application
 
 python app.py
 
-Then open:
-
-http://127.0.0.1:5000/
-
-in your browser.
-
+The startup command, model filenames, and dependency list should be adjusted to match the actual repository implementation.
 
 ---
 
-Example Prediction Workflow
+📁 Project Structure
 
-Step 1 — Login
+An illustrative organization for the application:
 
-The user logs into the system.
+explainable-xai-chest-xray/
+│
+├── app.py
+├── requirements.txt
+│
+├── models/
+│   ├── lung_segmentation_unet.h5
+│   ├── densenet121/
+│   ├── densenet201/
+│   ├── xception/
+│   ├── efficientnetb3/
+│   └── mobilenetv2/
+│
+├── static/
+│   ├── css/
+│   ├── js/
+│   ├── images/
+│   └── uploads/
+│
+├── templates/
+│
+├── database/
+│
+├── utils/
+│   ├── preprocessing.py
+│   ├── segmentation.py
+│   ├── ensemble.py
+│   ├── gradcam.py
+│   └── evaluation.py
+│
+├── reports/
+│
+└── README.md
 
-Step 2 — Upload X-Ray
-
-The user uploads a chest X-ray image.
-
-Step 3 — Image Validation
-
-The application validates the uploaded image.
-
-Step 4 — Preprocessing
-
-The image is resized and normalized.
-
-Step 5 — Lung Segmentation
-
-The U-Net model extracts the lung region.
-
-Step 6 — Classification
-
-The segmented image is passed through the five classification models.
-
-Step 7 — Ensemble
-
-The individual predictions are averaged.
-
-Step 8 — Prediction
-
-The system determines:
-
-NORMAL
-
-or:
-
-PNEUMONIA
-
-Step 9 — Confidence
-
-The application calculates the confidence percentage.
-
-Step 10 — Grad-CAM
-
-The system generates an explainability heatmap.
-
-Step 11 — Robustness Testing
-
-AI Challenge Mode tests the prediction against controlled image variations.
-
-Step 12 — Save Record
-
-Patient and prediction information is stored.
-
-Step 13 — Generate Report
-
-A PDF report is generated containing the analysis information.
-
+Illustrative structure; actual filenames and directories may differ.
 
 ---
 
-Evaluation Metrics
+🌟 What Makes This Project Interesting?
 
-The project can evaluate classification performance using standard metrics such as:
+- Multiple CNN architectures: Combines five configured deep-learning models.
+- Lung-aware processing: Integrates U-Net segmentation into the analysis pipeline.
+- Visual interpretability: Uses Grad-CAM to show influential image regions.
+- Ensemble predictions: Aggregates model outputs through average probability.
+- Robustness experimentation: Tests consistency under controlled image changes.
+- Complete application workflow: Connects AI inference with patient records, history, and reporting.
 
-Accuracy
+---
 
-Accuracy =
-(TP + TN) / (TP + TN + FP + FN)
+⚠️ Medical Disclaimer
 
-Precision
+This project is intended for educational, research, and software-development purposes only.
 
-Precision =
-TP / (TP + FP)
+It is not a clinically validated diagnostic device and must not be used as a substitute for professional medical evaluation.
 
-Recall
+Model predictions, confidence scores, Grad-CAM heatmaps, and application-defined severity categories are not clinical diagnoses or validated measures of disease severity. The system requires appropriate external validation before any clinical use.
 
-Recall =
-TP / (TP + FN)
+---
 
-F1 Score
+👨‍💻 Author
 
-F1 =
-2 × Precision × Recall
-----------------------
-Precision + Recall
+Sheikh Basharat Akbar
 
-Additional Evaluation
+AI Writer at Mercor | AI Trainer at micro1 | AI/ML & Software Engineer
 
-The project can also evaluate:
+MCA Graduate — Islamic University of Science & Technology
 
-Confusion Matrix
+Areas of Interest: Artificial Intelligence, Machine Learning, Deep Learning, Computer Vision, Explainable AI, NLP, and intelligent software systems.
 
-ROC Curve
+<p align="center">
+  <a href="https://www.linkedin.com/in/sheikh-basharat-389980225/">
+    <img src="https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" />
+  </a>
+  <a href="https://github.com/Xhkbasharat">
+    <img src="https://img.shields.io/badge/GitHub-Follow-181717?style=for-the-badge&logo=github&logoColor=white" />
+  </a>
+</p>---
 
-AUC
+⭐ Support
 
-Grad-CAM visualizations
+If you find this project interesting, consider giving the repository a ⭐.
 
-Robustness Score
+Suggestions, feedback, and technical discussions are welcome.
 
-Segmentation performance
-
-
-
+<p align="center">
+  <b>Explainable AI for Pneumonia Detection</b><br/>
+  <i>Building AI systems that don't just predict — they help explain.</i>
+</p><p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:00E5FF,50:6A00F4,100:00C853&height=110&section=footer" width="100%" />
+</p>
